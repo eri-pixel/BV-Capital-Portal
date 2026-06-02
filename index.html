@@ -26,9 +26,9 @@
   .xp-fill { height: 100%; background: linear-gradient(90deg, #8B6914, #FFD700); border-radius: 10px; transition: width 0.6s ease; }
   .xp-lbl { color: #7a7a9a; font-size: 12px; white-space: nowrap; }
   .tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; }
-  .tab { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; font-size: clamp(12px, 3.5vw, 14px); cursor: pointer; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+  .tab { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; font-size: clamp(11px, 3vw, 13px); cursor: pointer; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
   .tab.active { color: #FFD700; border-color: #FFD700; }
-  .tab-icon { font-size: clamp(18px, 5vw, 22px); display: block; margin-bottom: 2px; color: inherit; }
+  .tab-icon { font-size: clamp(16px, 4.5vw, 20px); display: block; margin-bottom: 2px; color: inherit; }
   .form-section { display: none; }
   .form-section.active { display: block; }
   .form-header { background: #0d0d1a; border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 1rem; border: 1px solid #8B6914; position: relative; overflow: hidden; }
@@ -61,29 +61,21 @@
   .toast.show { display: block; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); margin: 1.25rem 0; }
-  .log-wrap { margin-top: 1.25rem; }
-  .log-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .log-title { font-size: 11px; color: #8B6914; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-  .log-refresh { font-size: 12px; color: #7a7a9a; cursor: pointer; background: none; border: 1px solid #2a2a4a; border-radius: 8px; padding: 4px 10px; -webkit-tap-highlight-color: transparent; }
-  .log-refresh:active { color: #FFD700; border-color: #8B6914; }
-  .log-loading { text-align: center; color: #7a7a9a; font-size: 13px; padding: 20px 0; }
-  .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+
+  /* HISTORY */
+  .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
   .filter-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .filter-btn.active { color: #FFD700; border-color: #FFD700; }
-  .log-card { background: #0d0d1a; border-radius: 10px; margin-bottom: 10px; border: 1px solid #1a1a2e; overflow: hidden; }
-  .log-card-header { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid #1a1a2e; }
-  .log-badge { font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .log-refresh { font-size: 12px; color: #7a7a9a; cursor: pointer; background: none; border: 1px solid #2a2a4a; border-radius: 8px; padding: 4px 10px; margin-left: auto; }
+  .log-loading { text-align: center; color: #7a7a9a; font-size: 13px; padding: 20px 0; }
+  .empty-state { text-align: center; color: #5a5a7a; font-size: 13px; padding: 30px 0; }
+  .log-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0d0d1a; border-radius: 10px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
+  .log-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
   .log-badge.purchase { background: rgba(139,105,20,0.2); color: #FFD700; border: 1px solid #8B6914; }
   .log-badge.sale { background: rgba(104,211,145,0.1); color: #68d391; border: 1px solid rgba(104,211,145,0.3); }
   .log-badge.grading { background: rgba(214,188,250,0.1); color: #d6bcfa; border: 1px solid rgba(214,188,250,0.3); }
-  .log-card-title { flex: 1; font-size: 14px; color: #e0e0f0; font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .log-card-time { font-size: 11px; color: #5a5a7a; white-space: nowrap; }
-  .log-card-body { padding: 10px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .log-detail { display: flex; flex-direction: column; gap: 2px; }
-  .log-detail-label { font-size: 10px; color: #8B6914; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
-  .log-detail-value { font-size: 13px; color: #c0c0d8; word-break: break-word; }
-  .log-detail.full { grid-column: 1 / -1; }
-  .empty-state { text-align: center; color: #5a5a7a; font-size: 13px; padding: 30px 0; }
+  .log-item-name { flex: 1; font-size: 14px; color: #e0e0f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .log-item-date { font-size: 12px; color: #7a7a9a; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -180,7 +172,7 @@
   </div>
 
   <div id="history" class="form-section">
-    <div class="form-header"><h3>Submission History</h3><p>All records from your Google Sheet.</p></div>
+    <div class="form-header"><h3>Submission History</h3></div>
     <div class="log-filter">
       <button class="filter-btn active" onclick="filterLog('all')">All</button>
       <button class="filter-btn" onclick="filterLog('purchase')">Purchases</button>
@@ -198,18 +190,20 @@
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJ8LNl0AhJKfzP7zFWkZHhxG0FHbtIwA3PGI5uNJpFN6PLEUsxrcw5nRu9S_VePEzG0A/exec';
   const CACHE_KEY = 'bvcapital_history';
+  const STATS_KEY = 'bvcapital_stats';
   let xp = 0, streak = 0, lastDate = null;
   let allSubmissions = [];
   let currentFilter = 'all';
   const fileData = { p: null, s: null, g: null };
 
-  // Load XP/streak from localStorage
   try {
-    const saved = JSON.parse(localStorage.getItem('bvcapital_stats') || '{}');
-    xp = saved.xp || 0;
-    streak = saved.streak || 0;
-    lastDate = saved.lastDate || null;
+    const s = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
+    xp = s.xp || 0; streak = s.streak || 0; lastDate = s.lastDate || null;
     updateStats();
+  } catch(e) {}
+
+  try {
+    allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
   } catch(e) {}
 
   function switchTab(id) {
@@ -260,15 +254,14 @@
     const today = new Date().toDateString();
     if (lastDate !== today) { streak++; lastDate = today; }
     updateStats();
-    try { localStorage.setItem('bvcapital_stats', JSON.stringify({ xp, streak, lastDate })); } catch(e) {}
-    const msgs = { purchase: ['Purchase logged! Nice find, Ben!', 'New acquisition recorded.', 'Purchase locked in.'], sale: ['Sale recorded! Great work.', 'Sold! Stack that profit, Ben!', 'Sale logged.'], grading: ['Grading logged!', 'All recorded - Erika is on it.', 'Fingers crossed for a 10!'] };
+    try { localStorage.setItem(STATS_KEY, JSON.stringify({ xp, streak, lastDate })); } catch(e) {}
+    const msgs = { purchase: ['Purchase logged! Nice find, Ben!', 'New acquisition recorded.', 'Purchase locked in.'], sale: ['Sale recorded! Great work.', 'Sold! Stack that profit!', 'Sale logged.'], grading: ['Grading logged!', 'All recorded.', 'Fingers crossed for a 10!'] };
     showToast('ok', msgs[type][Math.floor(Math.random() * 3)]);
     clearForm(type);
     btn.disabled = false;
     btn.innerHTML = 'Submit ' + cap(type) + ' <span class="xp-pill">+20 XP</span>';
-    // Add to local cache
-    const newEntry = Object.assign({ type, itemName: name, _time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}), _ts: new Date().toISOString() }, payload);
-    allSubmissions.unshift(newEntry);
+    const entry = { type, itemName: name, date: payload.date || new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
+    allSubmissions.unshift(entry);
     try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
   }
 
@@ -294,74 +287,42 @@
 
   function filterLog(f) {
     currentFilter = f;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase().startsWith(f) || (f === 'all' && b.textContent === 'All')));
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', (f === 'all' && b.textContent === 'All') || b.textContent.toLowerCase() === f + 's' || b.textContent.toLowerCase() === f));
     renderLog();
   }
 
   async function loadHistory() {
-    document.getElementById('log-items').innerHTML = '<div class="log-loading">Loading history from Google Sheets...</div>';
-    // First show cached
-    try {
-      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
-      if (cached.length) { allSubmissions = cached; renderLog(); }
-    } catch(e) {}
-    // Then fetch fresh from Sheets
+    if (allSubmissions.length) renderLog();
+    else document.getElementById('log-items').innerHTML = '<div class="log-loading">Loading...</div>';
     try {
       const res = await fetch(SCRIPT_URL);
       const data = await res.json();
       allSubmissions = [];
-      (data.purchases || []).forEach(r => allSubmissions.push(Object.assign({ type: 'purchase' }, r)));
-      (data.sales || []).forEach(r => allSubmissions.push(Object.assign({ type: 'sale' }, r)));
-      (data.grading || []).forEach(r => allSubmissions.push(Object.assign({ type: 'grading' }, r)));
+      (data.purchases || []).forEach(r => allSubmissions.push({ type: 'purchase', itemName: r.itemName, date: r.date, timestamp: r.timestamp }));
+      (data.sales || []).forEach(r => allSubmissions.push({ type: 'sale', itemName: r.itemName, date: r.date, timestamp: r.timestamp }));
+      (data.grading || []).forEach(r => allSubmissions.push({ type: 'grading', itemName: r.itemName, date: r.date, timestamp: r.timestamp }));
       allSubmissions.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
       renderLog();
     } catch(err) {
-      if (!allSubmissions.length) {
-        document.getElementById('log-items').innerHTML = '<div class="log-loading">Could not load history. Check your connection.</div>';
-      }
+      if (!allSubmissions.length) document.getElementById('log-items').innerHTML = '<div class="log-loading">Could not load. Check connection.</div>';
     }
   }
 
   function renderLog() {
     const filtered = currentFilter === 'all' ? allSubmissions : allSubmissions.filter(s => s.type === currentFilter);
-    if (!filtered.length) {
-      document.getElementById('log-items').innerHTML = '<div class="empty-state">No submissions yet.</div>';
-      return;
-    }
+    if (!filtered.length) { document.getElementById('log-items').innerHTML = '<div class="empty-state">No submissions yet.</div>'; return; }
     document.getElementById('log-items').innerHTML = filtered.map(s => {
-      const ts = s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-AU', {day:'2-digit', month:'short', year:'numeric'}) : (s._time || '');
-      let details = '';
-      if (s.type === 'purchase') {
-        details += field('Item Type', s.itemType) + field('Price', s.price ? 'AUD $' + parseFloat(s.price).toFixed(2) : '') + field('Date', s.date) + field('Platform', s.platform) + field('Invoice', s.invoice) + field('File', s.file && s.file.name ? s.file.name : (typeof s.file === 'string' ? s.file : '')) + (s.notes ? fullField('Notes', s.notes) : '');
-      } else if (s.type === 'sale') {
-        details += field('Sale Price', s.price ? 'AUD $' + parseFloat(s.price).toFixed(2) : '') + field('Date', s.date) + field('Platform', s.platform) + field('Buyer', s.buyer) + field('Docs', s.docs) + field('File', s.file && s.file.name ? s.file.name : (typeof s.file === 'string' ? s.file : '')) + (s.notes ? fullField('Notes', s.notes) : '');
-      } else if (s.type === 'grading') {
-        details += field('Company', s.company) + field('Cost', s.cost ? 'AUD $' + parseFloat(s.cost).toFixed(2) : '') + field('Date Sent', s.date) + field('Status', s.status) + field('Grade', s.grade) + field('File', s.file && s.file.name ? s.file.name : (typeof s.file === 'string' ? s.file : '')) + (s.notes ? fullField('Notes', s.notes) : '');
-      }
-      return '<div class="log-card"><div class="log-card-header"><span class="log-badge ' + s.type + '">' + cap(s.type) + '</span><span class="log-card-title">' + (s.itemName || '') + '</span><span class="log-card-time">' + ts + '</span></div><div class="log-card-body">' + details + '</div></div>';
+      const d = s.date || (s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-AU', {day:'2-digit', month:'short', year:'numeric'}) : '');
+      return '<div class="log-row"><span class="log-badge ' + s.type + '">' + cap(s.type) + '</span><span class="log-item-name">' + (s.itemName || '') + '</span><span class="log-item-date">' + d + '</span></div>';
     }).join('');
   }
 
-  function field(label, value) {
-    if (!value) return '';
-    return '<div class="log-detail"><span class="log-detail-label">' + label + '</span><span class="log-detail-value">' + value + '</span></div>';
-  }
-  function fullField(label, value) {
-    if (!value) return '';
-    return '<div class="log-detail full"><span class="log-detail-label">' + label + '</span><span class="log-detail-value">' + value + '</span></div>';
-  }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
   document.getElementById('p-date').valueAsDate = new Date();
   document.getElementById('s-date').valueAsDate = new Date();
   document.getElementById('g-date').valueAsDate = new Date();
-
-  // Load cached stats
-  try {
-    const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
-    if (cached.length) allSubmissions = cached;
-  } catch(e) {}
 </script>
 </body>
 </html>
