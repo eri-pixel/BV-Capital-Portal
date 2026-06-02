@@ -34,7 +34,6 @@
   .form-header { background: #0d0d1a; border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 1rem; border: 1px solid #8B6914; position: relative; overflow: hidden; }
   .form-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #8B6914, transparent); }
   .form-header h3 { color: #FFD700; font-size: clamp(14px, 4vw, 16px); font-weight: 500; margin-bottom: 2px; font-family: 'Cinzel', serif; letter-spacing: 1px; }
-  .form-header p { color: #7a7a9a; font-size: clamp(12px, 3vw, 13px); }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
   @media (max-width: 380px) { .field-row { grid-template-columns: 1fr; } }
   .field-single { margin-bottom: 10px; }
@@ -61,8 +60,6 @@
   .toast.show { display: block; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); margin: 1.25rem 0; }
-
-  /* HISTORY */
   .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
   .filter-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .filter-btn.active { color: #FFD700; border-color: #FFD700; }
@@ -103,7 +100,7 @@
   </div>
 
   <div id="purchase" class="form-section active">
-    <div class="form-header"><h3>New Purchase</h3><p>Log a new collectible - card, manga, or box.</p></div>
+    <div class="form-header"><h3>New Purchase</h3></div>
     <div class="field-row">
       <div class="field"><label>Item name</label><input type="text" id="p-name" placeholder="e.g. Charizard Holo" /></div>
       <div class="field"><label>Item type</label><select id="p-type"><option value="">Select...</option><option>TCG Box</option><option>TCG Individual Card</option><option>Manga</option><option>Other</option></select></div>
@@ -126,7 +123,7 @@
   </div>
 
   <div id="sale" class="form-section">
-    <div class="form-header"><h3>Record a Sale</h3><p>Log an item you have sold.</p></div>
+    <div class="form-header"><h3>Record a Sale</h3></div>
     <div class="field-row">
       <div class="field"><label>Item sold</label><input type="text" id="s-name" placeholder="e.g. Pikachu PSA 10" /></div>
       <div class="field"><label>Sale price (AUD)</label><input type="number" id="s-price" placeholder="0.00" inputmode="decimal" /></div>
@@ -149,7 +146,7 @@
   </div>
 
   <div id="grading" class="form-section">
-    <div class="form-header"><h3>Grading Submission</h3><p>Log items sent for grading or update results.</p></div>
+    <div class="form-header"><h3>Grading Submission</h3></div>
     <div class="field-row">
       <div class="field"><label>Item(s)</label><input type="text" id="g-items" placeholder="e.g. Mewtwo Base Set" /></div>
       <div class="field"><label>Grading company</label><select id="g-company"><option value="">Select...</option><option>PSA</option><option>BGS (Beckett)</option><option>CGC</option><option>ACE</option><option>Other</option></select></div>
@@ -188,7 +185,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDZcNCqzSKoAOIUoCrtc88j3A4D6JJ8wmQeujDYhLgzwr9wu_xcnA4lnehm-fTNtRpnQ/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDW_ziLPlY1F9UdGB0PCx9nh-FXXtyeG0ZApT08aGV2iKXh8hTriWLLJKJHkh-80c21g/exec';
   const CACHE_KEY = 'bvcapital_history';
   const STATS_KEY = 'bvcapital_stats';
   let xp = 0, streak = 0, lastDate = null;
@@ -202,9 +199,7 @@
     updateStats();
   } catch(e) {}
 
-  try {
-    allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
-  } catch(e) {}
+  try { allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]'); } catch(e) {}
 
   function switchTab(id) {
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['purchase','sale','grading','history'][i] === id));
@@ -222,26 +217,35 @@
   }
 
   async function submitForm(type) {
-    let payload = { type }, name = '';
+    let params = { action: 'submit', type }, name = '';
     const p = type[0];
     if (type === 'purchase') {
       name = document.getElementById('p-name').value.trim();
       if (!name) { alert('Please enter an item name.'); return; }
-      payload = { type, itemName: name, itemType: document.getElementById('p-type').value, price: document.getElementById('p-price').value, date: document.getElementById('p-date').value, platform: document.getElementById('p-platform').value, invoice: document.getElementById('p-invoice').value, notes: document.getElementById('p-notes').value, file: fileData['p'] };
+      params = { action: 'submit', type, itemName: name, itemType: document.getElementById('p-type').value, price: document.getElementById('p-price').value, date: document.getElementById('p-date').value, platform: document.getElementById('p-platform').value, invoice: document.getElementById('p-invoice').value, notes: document.getElementById('p-notes').value };
     } else if (type === 'sale') {
       name = document.getElementById('s-name').value.trim();
       if (!name) { alert('Please enter the item sold.'); return; }
-      payload = { type, itemName: name, price: document.getElementById('s-price').value, date: document.getElementById('s-date').value, platform: document.getElementById('s-platform').value, buyer: document.getElementById('s-buyer').value, docs: document.getElementById('s-docs').value, notes: document.getElementById('s-notes').value, file: fileData['s'] };
+      params = { action: 'submit', type, itemName: name, price: document.getElementById('s-price').value, date: document.getElementById('s-date').value, platform: document.getElementById('s-platform').value, buyer: document.getElementById('s-buyer').value, docs: document.getElementById('s-docs').value, notes: document.getElementById('s-notes').value };
     } else if (type === 'grading') {
       name = document.getElementById('g-items').value.trim();
       if (!name) { alert('Please enter the item(s).'); return; }
-      payload = { type, itemName: name, company: document.getElementById('g-company').value, date: document.getElementById('g-date').value, cost: document.getElementById('g-cost').value, status: document.getElementById('g-status').value, grade: document.getElementById('g-grade').value, notes: document.getElementById('g-notes').value, file: fileData['g'] };
+      params = { action: 'submit', type, itemName: name, company: document.getElementById('g-company').value, date: document.getElementById('g-date').value, cost: document.getElementById('g-cost').value, status: document.getElementById('g-status').value, grade: document.getElementById('g-grade').value, notes: document.getElementById('g-notes').value };
     }
+
     const btn = document.getElementById(p + '-btn');
     btn.disabled = true; btn.textContent = 'Sending...';
+
     try {
-      await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
-      onSuccess(type, name, payload, btn); fileData[p] = null;
+      const query = Object.keys(params).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&');
+      const res = await fetch(SCRIPT_URL + '?' + query);
+      const data = await res.json();
+      if (data.result === 'success' || data.result) {
+        onSuccess(type, name, params, btn);
+        fileData[p] = null;
+      } else {
+        throw new Error('Failed');
+      }
     } catch(err) {
       btn.disabled = false;
       btn.innerHTML = 'Submit ' + cap(type) + ' <span class="xp-pill">+20 XP</span>';
@@ -249,7 +253,7 @@
     }
   }
 
-  function onSuccess(type, name, payload, btn) {
+  function onSuccess(type, name, params, btn) {
     xp += 20;
     const today = new Date().toDateString();
     if (lastDate !== today) { streak++; lastDate = today; }
@@ -260,7 +264,7 @@
     clearForm(type);
     btn.disabled = false;
     btn.innerHTML = 'Submit ' + cap(type) + ' <span class="xp-pill">+20 XP</span>';
-    const entry = { type, itemName: name, date: payload.date || new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
+    const entry = { type, itemName: name, date: params.date || new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
     allSubmissions.unshift(entry);
     try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
   }
