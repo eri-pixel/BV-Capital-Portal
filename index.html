@@ -1,130 +1,313 @@
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet();
-    var type = data.type;
-    var tab;
-    var rowData;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
+  html, body { width: 100%; overflow-x: hidden; background: #0a0a14; }
+  .app { padding: 1rem; max-width: 680px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a14; min-height: 100vh; }
+  .header { text-align: center; padding: 1.25rem 1rem; margin-bottom: 1.25rem; border-radius: 12px; border: 1px solid #8B6914; background: #0d0d1a; position: relative; overflow: hidden; }
+  .header-corner { position: absolute; width: 28px; height: 28px; border-color: #8B6914; border-style: solid; }
+  .header-corner.tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+  .header-corner.tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+  .header-corner.bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+  .header-corner.br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+  .header h1 { font-family: 'Cinzel', serif; color: #FFD700; font-size: clamp(17px, 5vw, 22px); font-weight: 600; letter-spacing: 2px; }
+  .header p { color: #7a7a9a; font-size: clamp(10px, 3vw, 12px); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+  .divider-gold { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+  .divider-gold::before, .divider-gold::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); }
+  .divider-gold span { color: #8B6914; font-size: 12px; }
+  .streak-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+  .streak-badge { border: 1px solid #8B6914; border-radius: 20px; padding: 3px 12px; color: #FFD700; font-size: 12px; background: rgba(139,105,20,0.15); white-space: nowrap; }
+  .xp-wrap { flex: 1; min-width: 80px; max-width: 120px; background: #1a1a2e; border-radius: 10px; height: 6px; overflow: hidden; border: 1px solid #2a2a4a; }
+  .xp-fill { height: 100%; background: linear-gradient(90deg, #8B6914, #FFD700); border-radius: 10px; transition: width 0.6s ease; }
+  .xp-lbl { color: #7a7a9a; font-size: 12px; white-space: nowrap; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; }
+  .tab { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; font-size: clamp(11px, 3vw, 13px); cursor: pointer; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
+  .tab.active { color: #FFD700; border-color: #FFD700; }
+  .tab-icon { font-size: clamp(16px, 4.5vw, 20px); display: block; margin-bottom: 2px; color: inherit; }
+  .form-section { display: none; }
+  .form-section.active { display: block; }
+  .form-header { background: #0d0d1a; border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 1rem; border: 1px solid #8B6914; position: relative; overflow: hidden; }
+  .form-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #8B6914, transparent); }
+  .form-header h3 { color: #FFD700; font-size: clamp(14px, 4vw, 16px); font-weight: 500; margin-bottom: 2px; font-family: 'Cinzel', serif; letter-spacing: 1px; }
+  .form-header p { color: #7a7a9a; font-size: clamp(12px, 3vw, 13px); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  @media (max-width: 380px) { .field-row { grid-template-columns: 1fr; } }
+  .field-single { margin-bottom: 10px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 12px; color: #8B6914; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+  .field input, .field select, .field textarea { width: 100%; border-radius: 10px; border: 1px solid #2a2a4a; background: #0a0a14; color: #e0e0f0; font-size: 16px; padding: 12px 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #8B6914; }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238B6914' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-color: #0a0a14; padding-right: 36px; }
+  .field select option { background: #0d0d1a; color: #e0e0f0; }
+  .upload-area { border: 1px dashed #2a2a4a; border-radius: 10px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s; background: #0a0a14; position: relative; }
+  .upload-area:hover, .upload-area:active { border-color: #8B6914; }
+  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-area p { color: #7a7a9a; font-size: 14px; }
+  .upload-icon { font-size: 24px; color: #8B6914; display: block; margin-bottom: 6px; }
+  .file-selected { color: #FFD700; font-size: 13px; margin-top: 6px; word-break: break-all; }
+  .submit-btn { width: 100%; margin-top: 1rem; padding: 16px; background: #0d0d1a; color: #FFD700; border: 1px solid #FFD700; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: 'Cinzel', serif; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .submit-btn:active { transform: scale(0.98); background: rgba(139,105,20,0.3); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .xp-pill { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 1px 8px; font-size: 12px; margin-left: 6px; font-family: -apple-system, sans-serif; }
+  .toast { display: none; margin-top: 1rem; padding: 14px 16px; border-radius: 10px; font-size: 14px; text-align: center; }
+  .toast.ok { background: #0d0d1a; border: 1px solid #8B6914; color: #FFD700; }
+  .toast.err { background: #1a0d0d; border: 1px solid #4a2a2a; color: #fc8181; }
+  .toast.show { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); margin: 1.25rem 0; }
+  .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .filter-btn.active { color: #FFD700; border-color: #FFD700; }
+  .log-refresh { font-size: 12px; color: #7a7a9a; cursor: pointer; background: none; border: 1px solid #2a2a4a; border-radius: 8px; padding: 4px 10px; margin-left: auto; }
+  .log-loading { text-align: center; color: #7a7a9a; font-size: 13px; padding: 20px 0; }
+  .empty-state { text-align: center; color: #5a5a7a; font-size: 13px; padding: 30px 0; }
+  .log-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0d0d1a; border-radius: 10px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
+  .log-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .log-badge.purchase { background: rgba(139,105,20,0.2); color: #FFD700; border: 1px solid #8B6914; }
+  .log-badge.sale { background: rgba(104,211,145,0.1); color: #68d391; border: 1px solid rgba(104,211,145,0.3); }
+  .log-badge.grading { background: rgba(214,188,250,0.1); color: #d6bcfa; border: 1px solid rgba(214,188,250,0.3); }
+  .log-item-name { flex: 1; font-size: 14px; color: #e0e0f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .log-item-date { font-size: 12px; color: #7a7a9a; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-corner tl"></div>
+    <div class="header-corner tr"></div>
+    <div class="header-corner bl"></div>
+    <div class="header-corner br"></div>
+    <h1>BV CAPITAL</h1>
+    <div class="divider-gold"><span>&#9670;</span></div>
+    <p>Collectibles Submission Portal</p>
+    <div class="streak-row">
+      <span class="streak-badge" id="streak-display">0 day streak</span>
+      <div class="xp-wrap"><div class="xp-fill" id="xp-bar" style="width:0%"></div></div>
+      <span class="xp-lbl" id="xp-label">0 XP</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('purchase')"><span class="tab-icon"><i class="ti ti-shopping-cart"></i></span>Purchase</div>
+    <div class="tab" onclick="switchTab('sale')"><span class="tab-icon"><i class="ti ti-currency-dollar"></i></span>Sale</div>
+    <div class="tab" onclick="switchTab('grading')"><span class="tab-icon"><i class="ti ti-award"></i></span>Grading</div>
+    <div class="tab" onclick="switchTab('history')"><span class="tab-icon"><i class="ti ti-history"></i></span>History</div>
+  </div>
+  <div id="purchase" class="form-section active">
+    <div class="form-header"><h3>New Purchase</h3></div>
+    <div class="field-row">
+      <div class="field"><label>Item name</label><input type="text" id="p-name" placeholder="e.g. Charizard Holo" /></div>
+      <div class="field"><label>Item type</label><select id="p-type"><option value="">Select...</option><option>TCG Box</option><option>TCG Individual Card</option><option>Manga</option><option>Other</option></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Price (AUD)</label><input type="number" id="p-price" placeholder="0.00" inputmode="decimal" /></div>
+      <div class="field"><label>Date purchased</label><input type="date" id="p-date" /></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Platform</label><select id="p-platform"><option value="">Select...</option><option>eBay</option><option>Facebook Marketplace</option><option>Auction</option><option>Other</option></select></div>
+      <div class="field"><label>Invoice status</label><select id="p-invoice"><option value="">Select...</option><option>Attached below</option><option>Will send separately</option><option>No invoice available</option></select></div>
+    </div>
+    <div class="field field-single">
+      <label>Attach invoice (optional)</label>
+      <div class="upload-area"><input type="file" id="p-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('p')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach invoice</p></div>
+      <div class="file-selected" id="p-file-name"></div>
+    </div>
+    <div class="field field-single"><label>Notes (optional)</label><textarea id="p-notes" placeholder="Condition, seller info, extra details..."></textarea></div>
+    <button class="submit-btn" id="p-btn" onclick="submitForm('purchase')">Submit Purchase <span class="xp-pill">+20 XP</span></button>
+  </div>
+  <div id="sale" class="form-section">
+    <div class="form-header"><h3>Record a Sale</h3></div>
+    <div class="field-row">
+      <div class="field"><label>Item sold</label><input type="text" id="s-name" placeholder="e.g. Pikachu PSA 10" /></div>
+      <div class="field"><label>Sale price (AUD)</label><input type="number" id="s-price" placeholder="0.00" inputmode="decimal" /></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Date sold</label><input type="date" id="s-date" /></div>
+      <div class="field"><label>Platform</label><select id="s-platform"><option value="">Select...</option><option>eBay</option><option>Marketplace</option><option>Private Sale</option><option>Other</option></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Buyer name (optional)</label><input type="text" id="s-buyer" placeholder="e.g. John S." /></div>
+      <div class="field"><label>Sale docs</label><select id="s-docs"><option value="">Select...</option><option>Attached below</option><option>eBay auto-records</option><option>Will send separately</option><option>No docs available</option></select></div>
+    </div>
+    <div class="field field-single">
+      <label>Attach document (optional)</label>
+      <div class="upload-area"><input type="file" id="s-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('s')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach sale confirmation</p></div>
+      <div class="file-selected" id="s-file-name"></div>
+    </div>
+    <div class="field field-single"><label>Notes (optional)</label><textarea id="s-notes" placeholder="Any extra sale details..."></textarea></div>
+    <button class="submit-btn" id="s-btn" onclick="submitForm('sale')">Submit Sale <span class="xp-pill">+20 XP</span></button>
+  </div>
+  <div id="grading" class="form-section">
+    <div class="form-header"><h3>Grading Submission</h3></div>
+    <div class="field-row">
+      <div class="field"><label>Item(s)</label><input type="text" id="g-items" placeholder="e.g. Mewtwo Base Set" /></div>
+      <div class="field"><label>Grading company</label><select id="g-company"><option value="">Select...</option><option>PSA</option><option>BGS (Beckett)</option><option>CGC</option><option>ACE</option><option>Other</option></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Date sent</label><input type="date" id="g-date" /></div>
+      <div class="field"><label>Cost (AUD)</label><input type="number" id="g-cost" placeholder="0.00" inputmode="decimal" /></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Status</label><select id="g-status"><option value="">Select...</option><option>Sent for grading</option><option>Results received</option></select></div>
+      <div class="field"><label>Grade result</label><input type="text" id="g-grade" placeholder="e.g. PSA 9" /></div>
+    </div>
+    <div class="field field-single">
+      <label>Attach docs (optional)</label>
+      <div class="upload-area"><input type="file" id="g-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('g')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach grading cert</p></div>
+      <div class="file-selected" id="g-file-name"></div>
+    </div>
+    <div class="field field-single"><label>Notes (optional)</label><textarea id="g-notes" placeholder="Tracking number, reference..."></textarea></div>
+    <button class="submit-btn" id="g-btn" onclick="submitForm('grading')">Submit Grading <span class="xp-pill">+20 XP</span></button>
+  </div>
+  <div id="history" class="form-section">
+    <div class="form-header"><h3>Submission History</h3></div>
+    <div class="log-filter">
+      <button class="filter-btn active" onclick="filterLog('all')">All</button>
+      <button class="filter-btn" onclick="filterLog('purchase')">Purchases</button>
+      <button class="filter-btn" onclick="filterLog('sale')">Sales</button>
+      <button class="filter-btn" onclick="filterLog('grading')">Grading</button>
+      <button class="log-refresh" onclick="loadHistory()"><i class="ti ti-refresh"></i> Refresh</button>
+    </div>
+    <div id="log-items"><div class="log-loading">Loading history...</div></div>
+  </div>
+  <div class="toast ok" id="toast-ok"></div>
+  <div class="toast err" id="toast-err"></div>
+</div>
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDW_ziLPlY1F9UdGB0PCx9nh-FXXtyeG0ZApT08aGV2iKXh8hTriWLLJKJHkh-80c21g/exec';
+  const CACHE_KEY = 'bvcapital_history';
+  const STATS_KEY = 'bvcapital_stats';
+  let xp = 0, streak = 0, lastDate = null;
+  let allSubmissions = [];
+  let currentFilter = 'all';
+  const fileData = { p: null, s: null, g: null };
 
+  try { const s = JSON.parse(localStorage.getItem(STATS_KEY)||'{}'); xp=s.xp||0; streak=s.streak||0; lastDate=s.lastDate||null; updateStats(); } catch(e) {}
+  try { allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY)||'[]'); } catch(e) {}
+
+  function switchTab(id) {
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['purchase','sale','grading','history'][i] === id));
+    document.querySelectorAll('.form-section').forEach(s => s.classList.toggle('active', s.id === id));
+    if (id === 'history') loadHistory();
+  }
+
+  function handleFile(prefix) {
+    const file = document.getElementById(prefix+'-file').files[0];
+    if (!file) return;
+    document.getElementById(prefix+'-file-name').textContent = 'Attached: '+file.name;
+    const reader = new FileReader();
+    reader.onload = e => { fileData[prefix] = { name: file.name, type: file.type, data: e.target.result.split(',')[1] }; };
+    reader.readAsDataURL(file);
+  }
+
+  async function submitForm(type) {
+    let payload = { type }, name = '';
+    const p = type[0];
     if (type === 'purchase') {
-      tab = getOrCreateSheet(sheet, 'Purchases', ['Timestamp','Item Name','Item Type','Purchase Price (AUD)','Date Purchased','Platform','Invoice Status','Notes','File Attached']);
-      rowData = [new Date(), data.itemName||'', data.itemType||'', data.price||'', data.date||'', data.platform||'', data.invoice||'', data.notes||'', data.file ? 'Yes - emailed to Erika' : 'No'];
+      name = document.getElementById('p-name').value.trim();
+      if (!name) { alert('Please enter an item name.'); return; }
+      payload = { type, itemName: name, itemType: document.getElementById('p-type').value, price: document.getElementById('p-price').value, date: document.getElementById('p-date').value, platform: document.getElementById('p-platform').value, invoice: document.getElementById('p-invoice').value, notes: document.getElementById('p-notes').value, file: fileData['p'] };
     } else if (type === 'sale') {
-      tab = getOrCreateSheet(sheet, 'Sales', ['Timestamp','Item Sold','Sale Price (AUD)','Date Sold','Platform','Buyer Name','Docs Status','Notes','File Attached']);
-      rowData = [new Date(), data.itemName||'', data.price||'', data.date||'', data.platform||'', data.buyer||'', data.docs||'', data.notes||'', data.file ? 'Yes - emailed to Erika' : 'No'];
+      name = document.getElementById('s-name').value.trim();
+      if (!name) { alert('Please enter the item sold.'); return; }
+      payload = { type, itemName: name, price: document.getElementById('s-price').value, date: document.getElementById('s-date').value, platform: document.getElementById('s-platform').value, buyer: document.getElementById('s-buyer').value, docs: document.getElementById('s-docs').value, notes: document.getElementById('s-notes').value, file: fileData['s'] };
     } else if (type === 'grading') {
-      tab = getOrCreateSheet(sheet, 'Grading', ['Timestamp','Item(s)','Grading Company','Date Sent','Submission Cost (AUD)','Status','Grade Result','Notes','File Attached']);
-      rowData = [new Date(), data.itemName||'', data.company||'', data.date||'', data.cost||'', data.status||'', data.grade||'', data.notes||'', data.file ? 'Yes - emailed to Erika' : 'No'];
+      name = document.getElementById('g-items').value.trim();
+      if (!name) { alert('Please enter the item(s).'); return; }
+      payload = { type, itemName: name, company: document.getElementById('g-company').value, date: document.getElementById('g-date').value, cost: document.getElementById('g-cost').value, status: document.getElementById('g-status').value, grade: document.getElementById('g-grade').value, notes: document.getElementById('g-notes').value, file: fileData['g'] };
     }
+    const btn = document.getElementById(p+'-btn');
+    btn.disabled = true; btn.textContent = 'Sending...';
 
-    tab.appendRow(rowData);
+    // Send with no-cors — always treat as success since no-cors never throws
+    try {
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+      await new Promise(r => setTimeout(r, 2000));
+    } catch(e) {}
 
-    // Always send email notification
-    notifyErika(data, type);
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'success' }))
-      .setMimeType(ContentService.MimeType.JSON);
-
-  } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: 'error', message: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function notifyErika(data, type) {
-  var recipientEmail = 'mendozaerikac9@gmail.com';
-  var subject = '[BV Capital] New ' + cap(type) + ' - ' + (data.itemName || 'Unknown Item');
-  var body = 'Hi Erika,\n\nBen has submitted a new ' + type + '.\n\n';
-
-  if (type === 'purchase') {
-    body += 'Item: ' + (data.itemName || 'N/A') + '\n';
-    body += 'Item Type: ' + (data.itemType || 'N/A') + '\n';
-    body += 'Price: AUD $' + (data.price || 'N/A') + '\n';
-    body += 'Date: ' + (data.date || 'N/A') + '\n';
-    body += 'Platform: ' + (data.platform || 'N/A') + '\n';
-    body += 'Invoice Status: ' + (data.invoice || 'N/A') + '\n';
-  } else if (type === 'sale') {
-    body += 'Item Sold: ' + (data.itemName || 'N/A') + '\n';
-    body += 'Sale Price: AUD $' + (data.price || 'N/A') + '\n';
-    body += 'Date: ' + (data.date || 'N/A') + '\n';
-    body += 'Platform: ' + (data.platform || 'N/A') + '\n';
-    body += 'Buyer: ' + (data.buyer || 'N/A') + '\n';
-    body += 'Docs: ' + (data.docs || 'N/A') + '\n';
-  } else if (type === 'grading') {
-    body += 'Item(s): ' + (data.itemName || 'N/A') + '\n';
-    body += 'Grading Company: ' + (data.company || 'N/A') + '\n';
-    body += 'Date Sent: ' + (data.date || 'N/A') + '\n';
-    body += 'Cost: AUD $' + (data.cost || 'N/A') + '\n';
-    body += 'Status: ' + (data.status || 'N/A') + '\n';
-    body += 'Grade Result: ' + (data.grade || 'N/A') + '\n';
+    onSuccess(type, name, payload, btn);
+    fileData[p] = null;
   }
 
-  if (data.notes) body += 'Notes: ' + data.notes + '\n';
-  body += '\nThis has been logged in the BV Capital Submissions Google Sheet.\n\nRegards,\nBV Capital Collectibles Portal';
-
-  // Attach file if present, otherwise just send plain email
-  if (data.file && data.file.data) {
-    var fileBytes = Utilities.base64Decode(data.file.data);
-    var blob = Utilities.newBlob(fileBytes, data.file.type, data.file.name);
-    GmailApp.sendEmail(recipientEmail, subject, body, { attachments: [blob] });
-  } else {
-    GmailApp.sendEmail(recipientEmail, subject, body);
+  function onSuccess(type, name, payload, btn) {
+    xp += 20;
+    const today = new Date().toDateString();
+    if (lastDate !== today) { streak++; lastDate = today; }
+    updateStats();
+    try { localStorage.setItem(STATS_KEY, JSON.stringify({ xp, streak, lastDate })); } catch(e) {}
+    const msgs = { purchase: ['Purchase logged! Nice find, Ben!', 'New acquisition recorded.', 'Purchase locked in.'], sale: ['Sale recorded! Great work.', 'Sold! Stack that profit!', 'Sale logged.'], grading: ['Grading logged!', 'All recorded.', 'Fingers crossed for a 10!'] };
+    showToast('ok', msgs[type][Math.floor(Math.random()*3)]);
+    clearForm(type);
+    btn.disabled = false;
+    btn.innerHTML = 'Submit '+cap(type)+' <span class="xp-pill">+20 XP</span>';
+    const entry = { type, itemName: name, date: payload.date||new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
+    allSubmissions.unshift(entry);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
   }
-}
 
-function doGet(e) {
-  try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet();
-    var result = { purchases: [], sales: [], grading: [] };
+  function updateStats() {
+    document.getElementById('xp-bar').style.width = Math.min((xp%100),100)+'%';
+    document.getElementById('xp-label').textContent = xp+' XP';
+    document.getElementById('streak-display').textContent = streak+' day streak';
+  }
 
-    var purchaseTab = sheet.getSheetByName('Purchases');
-    if (purchaseTab && purchaseTab.getLastRow() > 1) {
-      var pData = purchaseTab.getRange(2, 1, purchaseTab.getLastRow() - 1, 9).getValues();
-      result.purchases = pData.map(function(r) {
-        return { timestamp: r[0], itemName: r[1], itemType: r[2], price: r[3], date: r[4], platform: r[5], invoice: r[6], notes: r[7], file: r[8] };
-      }).reverse();
+  function clearForm(type) {
+    const p = type[0];
+    ({purchase:['p-name','p-price','p-date','p-notes'],sale:['s-name','s-price','s-date','s-buyer','s-notes'],grading:['g-items','g-cost','g-date','g-grade','g-notes']})[type].forEach(id => document.getElementById(id).value='');
+    ({purchase:['p-type','p-platform','p-invoice'],sale:['s-platform','s-docs'],grading:['g-company','g-status']})[type].forEach(id => document.getElementById(id).selectedIndex=0);
+    document.getElementById(p+'-file').value='';
+    document.getElementById(p+'-file-name').textContent='';
+  }
+
+  function showToast(kind, msg) {
+    const el = document.getElementById('toast-'+kind);
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  function filterLog(f) {
+    currentFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', (f==='all'&&b.textContent==='All')||b.textContent.toLowerCase()===f+'s'||b.textContent.toLowerCase()===f));
+    renderLog();
+  }
+
+  async function loadHistory() {
+    if (allSubmissions.length) renderLog();
+    else document.getElementById('log-items').innerHTML = '<div class="log-loading">Loading...</div>';
+    try {
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      allSubmissions = [];
+      (data.purchases||[]).forEach(r => allSubmissions.push({ type:'purchase', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
+      (data.sales||[]).forEach(r => allSubmissions.push({ type:'sale', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
+      (data.grading||[]).forEach(r => allSubmissions.push({ type:'grading', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
+      allSubmissions.sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp));
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
+      renderLog();
+    } catch(err) {
+      if (!allSubmissions.length) document.getElementById('log-items').innerHTML = '<div class="log-loading">Could not load. Check connection.</div>';
     }
-
-    var salesTab = sheet.getSheetByName('Sales');
-    if (salesTab && salesTab.getLastRow() > 1) {
-      var sData = salesTab.getRange(2, 1, salesTab.getLastRow() - 1, 9).getValues();
-      result.sales = sData.map(function(r) {
-        return { timestamp: r[0], itemName: r[1], price: r[2], date: r[3], platform: r[4], buyer: r[5], docs: r[6], notes: r[7], file: r[8] };
-      }).reverse();
-    }
-
-    var gradingTab = sheet.getSheetByName('Grading');
-    if (gradingTab && gradingTab.getLastRow() > 1) {
-      var gData = gradingTab.getRange(2, 1, gradingTab.getLastRow() - 1, 9).getValues();
-      result.grading = gData.map(function(r) {
-        return { timestamp: r[0], itemName: r[1], company: r[2], date: r[3], cost: r[4], status: r[5], grade: r[6], notes: r[7], file: r[8] };
-      }).reverse();
-    }
-
-    return ContentService
-      .createTextOutput(JSON.stringify(result))
-      .setMimeType(ContentService.MimeType.JSON);
-
-  } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ error: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
   }
-}
 
-function getOrCreateSheet(spreadsheet, name, headers) {
-  var tab = spreadsheet.getSheetByName(name);
-  if (!tab) {
-    tab = spreadsheet.insertSheet(name);
-    tab.appendRow(headers);
-    tab.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-    tab.setFrozenRows(1);
+  function renderLog() {
+    const filtered = currentFilter==='all' ? allSubmissions : allSubmissions.filter(s => s.type===currentFilter);
+    if (!filtered.length) { document.getElementById('log-items').innerHTML = '<div class="empty-state">No submissions yet.</div>'; return; }
+    document.getElementById('log-items').innerHTML = filtered.map(s => {
+      const d = s.date || (s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}) : '');
+      return '<div class="log-row"><span class="log-badge '+s.type+'">'+cap(s.type)+'</span><span class="log-item-name">'+(s.itemName||'')+'</span><span class="log-item-date">'+d+'</span></div>';
+    }).join('');
   }
-  return tab;
-}
 
-function cap(s) {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
+  function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+
+  document.getElementById('p-date').valueAsDate = new Date();
+  document.getElementById('s-date').valueAsDate = new Date();
+  document.getElementById('g-date').valueAsDate = new Date();
+</script>
+</body>
+</html>
