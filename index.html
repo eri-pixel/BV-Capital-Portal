@@ -3,169 +3,323 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BV Capital — Collectibles Hub</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
-  html, body { width: 100%; overflow-x: hidden; background: #0a0a14; }
-  .app { padding: 1rem; max-width: 680px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a14; min-height: 100vh; }
-  .header { text-align: center; padding: 1.25rem 1rem; margin-bottom: 1.25rem; border-radius: 12px; border: 1px solid #8B6914; background: #0d0d1a; position: relative; overflow: hidden; }
-  .header-corner { position: absolute; width: 28px; height: 28px; border-color: #8B6914; border-style: solid; }
-  .header-corner.tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
-  .header-corner.tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
-  .header-corner.bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
-  .header-corner.br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
-  .header h1 { font-family: 'Cinzel', serif; color: #FFD700; font-size: clamp(17px, 5vw, 22px); font-weight: 600; letter-spacing: 2px; }
-  .header p { color: #7a7a9a; font-size: clamp(10px, 3vw, 12px); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
-  .divider-gold { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
-  .divider-gold::before, .divider-gold::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); }
-  .divider-gold span { color: #8B6914; font-size: 12px; }
-  .streak-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-  .streak-badge { border: 1px solid #8B6914; border-radius: 20px; padding: 3px 12px; color: #FFD700; font-size: 12px; background: rgba(139,105,20,0.15); white-space: nowrap; }
-  .xp-wrap { flex: 1; min-width: 80px; max-width: 120px; background: #1a1a2e; border-radius: 10px; height: 6px; overflow: hidden; border: 1px solid #2a2a4a; }
+  html, body { width: 100%; overflow-x: hidden; background: #08080f; }
+  .app { padding: 1rem; max-width: 680px; margin: 0 auto; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #08080f; min-height: 100vh; padding-bottom: 92px; }
+
+  .header { text-align: center; padding: 1.5rem 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 18px; border: 1px solid #8B6914; background: radial-gradient(120% 140% at 50% -10%, rgba(139,105,20,0.18), #0d0d1a 60%); position: relative; overflow: hidden; }
+  .header-corner { position: absolute; width: 22px; height: 22px; border-color: #8B6914; border-style: solid; opacity: 0.8; }
+  .header-corner.tl { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; }
+  .header-corner.tr { top: 8px; right: 8px; border-width: 1.5px 1.5px 0 0; }
+  .header-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1.5px 1.5px; }
+  .header-corner.br { bottom: 8px; right: 8px; border-width: 0 1.5px 1.5px 0; }
+  .header h1 { font-family: 'Cinzel', serif; color: #FFD700; font-size: clamp(19px, 5.5vw, 24px); font-weight: 600; letter-spacing: 1.5px; }
+  .header p { color: #9a94b0; font-size: clamp(12px, 3.2vw, 13px); margin-top: 6px; }
+  .streak-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .streak-badge { display: inline-flex; align-items: center; gap: 5px; border: 1px solid #8B6914; border-radius: 20px; padding: 4px 12px 4px 10px; color: #FFD700; font-size: 12px; font-weight: 600; background: rgba(139,105,20,0.15); white-space: nowrap; }
+  .xp-wrap { flex: 1; min-width: 80px; max-width: 130px; background: #1a1a2e; border-radius: 10px; height: 6px; overflow: hidden; border: 1px solid #2a2a4a; }
   .xp-fill { height: 100%; background: linear-gradient(90deg, #8B6914, #FFD700); border-radius: 10px; transition: width 0.6s ease; }
-  .xp-lbl { color: #7a7a9a; font-size: 12px; white-space: nowrap; }
-  .tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; }
-  .tab { flex: 1; padding: 10px 4px; border-radius: 10px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; font-size: clamp(11px, 3vw, 13px); cursor: pointer; text-align: center; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
-  .tab.active { color: #FFD700; border-color: #FFD700; }
-  .tab-icon { font-size: clamp(16px, 4.5vw, 20px); display: block; margin-bottom: 2px; color: inherit; }
-  .form-section { display: none; }
-  .form-section.active { display: block; }
-  .form-header { background: #0d0d1a; border-radius: 10px; padding: 0.875rem 1rem; margin-bottom: 1rem; border: 1px solid #8B6914; position: relative; overflow: hidden; }
-  .form-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #8B6914, transparent); }
-  .form-header h3 { color: #FFD700; font-size: clamp(14px, 4vw, 16px); font-weight: 500; margin-bottom: 2px; font-family: 'Cinzel', serif; letter-spacing: 1px; }
-  .form-header p { color: #7a7a9a; font-size: clamp(12px, 3vw, 13px); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-  @media (max-width: 380px) { .field-row { grid-template-columns: 1fr; } }
-  .field-single { margin-bottom: 10px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 12px; color: #8B6914; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
-  .field input, .field select, .field textarea { width: 100%; border-radius: 10px; border: 1px solid #2a2a4a; background: #0a0a14; color: #e0e0f0; font-size: 16px; padding: 12px 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #8B6914; }
-  .field textarea { resize: vertical; min-height: 80px; }
-  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238B6914' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-color: #0a0a14; padding-right: 36px; }
-  .field select option { background: #0d0d1a; color: #e0e0f0; }
-  .upload-area { border: 1px dashed #2a2a4a; border-radius: 10px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s; background: #0a0a14; position: relative; }
-  .upload-area:hover, .upload-area:active { border-color: #8B6914; }
-  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-area p { color: #7a7a9a; font-size: 14px; }
-  .upload-icon { font-size: 24px; color: #8B6914; display: block; margin-bottom: 6px; }
-  .file-selected { color: #FFD700; font-size: 13px; margin-top: 6px; word-break: break-all; }
-  .submit-btn { width: 100%; margin-top: 1rem; padding: 16px; background: #0d0d1a; color: #FFD700; border: 1px solid #FFD700; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: 'Cinzel', serif; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .submit-btn:active { transform: scale(0.98); background: rgba(139,105,20,0.3); }
-  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .xp-pill { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 1px 8px; font-size: 12px; margin-left: 6px; font-family: -apple-system, sans-serif; }
-  .toast { display: none; margin-top: 1rem; padding: 14px 16px; border-radius: 10px; font-size: 14px; text-align: center; }
-  .toast.ok { background: #0d0d1a; border: 1px solid #8B6914; color: #FFD700; }
-  .toast.err { background: #1a0d0d; border: 1px solid #4a2a2a; color: #fc8181; }
-  .toast.show { display: block; animation: fadeIn 0.3s ease; }
+  .xp-lbl { color: #9a94b0; font-size: 12px; white-space: nowrap; font-weight: 500; }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.25s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); margin: 1.25rem 0; }
-  .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
-  .filter-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; color: #9a94b0; font-size: 13px; font-weight: 500; background: none; border: none; cursor: pointer; margin-bottom: 16px; padding: 6px 0; -webkit-tap-highlight-color: transparent; }
+  .back-btn:active { color: #FFD700; }
+
+  .screen-title { font-family: 'Cinzel', serif; color: #FFD700; font-size: clamp(16px, 4.8vw, 19px); letter-spacing: 0.5px; margin-bottom: 5px; text-align: center; }
+  .screen-sub { color: #9a94b0; font-size: 13px; text-align: center; margin-bottom: 1.5rem; }
+
+  .menu-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+  .menu-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 18px; background: #0d0d1a; border: 1px solid #23233a; cursor: pointer; transition: transform 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; }
+  .menu-card:active { transform: scale(0.97); }
+  .menu-card::before { content: ''; position: absolute; top: -40%; left: -10%; width: 70%; height: 180%; border-radius: 50%; filter: blur(30px); opacity: 0.35; pointer-events: none; }
+  .menu-card.purchase { border-color: rgba(139,105,20,0.55); }
+  .menu-card.purchase::before { background: #8B6914; }
+  .menu-card.sale { border-color: rgba(104,211,145,0.4); }
+  .menu-card.sale::before { background: #2f6e4f; }
+  .menu-card.grading { border-color: rgba(214,188,250,0.4); }
+  .menu-card.grading::before { background: #6c4f96; }
+  .menu-card-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 23px; flex-shrink: 0; position: relative; z-index: 1; }
+  .menu-card.purchase .menu-card-icon { background: rgba(139,105,20,0.22); color: #FFD700; }
+  .menu-card.sale .menu-card-icon { background: rgba(104,211,145,0.16); color: #68d391; }
+  .menu-card.grading .menu-card-icon { background: rgba(214,188,250,0.16); color: #d6bcfa; }
+  .menu-card-text { position: relative; z-index: 1; }
+  .menu-card-text h3 { font-family: 'Cinzel', serif; font-size: 16px; color: #ece9f5; letter-spacing: 0.4px; margin-bottom: 3px; font-weight: 600; }
+  .menu-card-text p { font-size: 12.5px; color: #9a94b0; }
+  .menu-card-chev { margin-left: auto; color: #45455e; font-size: 20px; position: relative; z-index: 1; }
+  .menu-card-xp { position: absolute; top: 12px; right: 14px; font-size: 10.5px; color: #9a94b0; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 2px 9px; z-index: 1; }
+
+  .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cat-card { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 22px 10px; border-radius: 16px; background: #0d0d1a; border: 1px solid #23233a; cursor: pointer; transition: transform 0.15s, border-color 0.15s; -webkit-tap-highlight-color: transparent; }
+  .cat-card:active { transform: scale(0.96); border-color: #FFD700; }
+  .cat-card-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,215,0,0.08); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #FFD700; }
+  .cat-card span.label { font-size: 13px; color: #ece9f5; text-align: center; font-weight: 500; }
+
+  .form-card { background: #0d0d1a; border-radius: 16px; padding: 1.2rem; border: 1px solid #23233a; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 380px) { .field-row { grid-template-columns: 1fr; } }
+  .field-single { margin-bottom: 14px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label { font-size: 12.5px; color: #c9b26a; font-weight: 600; }
+  .field label .req { color: #f28b8b; margin-left: 3px; font-weight: 700; }
+  .field input, .field select, .field textarea { width: 100%; border-radius: 11px; border: 1px solid #23233a; background: #08080f; color: #ece9f5; font-size: 16px; padding: 12px 14px; font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-appearance: none; appearance: none; transition: border-color 0.15s; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #8B6914; }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238B6914' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-color: #08080f; padding-right: 36px; }
+  .field select option { background: #0d0d1a; color: #ece9f5; }
+
+  .upload-box { border: 1.5px dashed #2c2c46; border-radius: 14px; padding: 20px; text-align: center; cursor: pointer; position: relative; background: #08080f; transition: border-color 0.2s, background 0.2s; }
+  .upload-box.required { border-color: rgba(242,139,139,0.45); }
+  .upload-box.done { border-color: #68d391; background: rgba(104,211,145,0.07); }
+  .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-box .up-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(139,105,20,0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 18px; color: #c9b26a; }
+  .upload-box.done .up-icon { background: rgba(104,211,145,0.15); color: #68d391; }
+  .upload-box p.up-label { color: #ece9f5; font-size: 13px; font-weight: 600; }
+  .upload-box p.up-hint { color: #74708c; font-size: 11px; margin-top: 3px; }
+  .upload-box p.up-file { color: #68d391; font-size: 12px; margin-top: 8px; word-break: break-all; font-weight: 500; }
+  .upload-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 380px) { .upload-row { grid-template-columns: 1fr; } }
+  .upload-label-ext { font-size: 12.5px; color: #c9b26a; font-weight: 600; display: block; margin-bottom: 7px; }
+
+  .submit-btn { width: 100%; margin-top: 0.5rem; padding: 16px; background: #08080f; color: #FFD700; border: 1px solid #FFD700; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Cinzel', serif; letter-spacing: 0.8px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.32; cursor: not-allowed; border-color: #45455e; color: #9a94b0; }
+  .xp-pill { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 1px 9px; font-size: 11px; margin-left: 6px; font-family: 'Manrope', sans-serif; font-weight: 600; }
+  .missing-hint { color: #f28b8b; font-size: 12.5px; text-align: center; margin-top: 10px; min-height: 16px; }
+
+  .success-overlay { position: fixed; inset: 0; background: rgba(6,6,12,0.94); display: none; align-items: center; justify-content: center; z-index: 50; flex-direction: column; text-align: center; padding: 2rem; }
+  .success-overlay.show { display: flex; animation: fadeIn 0.2s ease; }
+  .success-badge { width: 88px; height: 88px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,215,0,0.25), rgba(255,215,0,0.05) 70%); border: 2px solid #FFD700; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #FFD700; margin-bottom: 1.4rem; animation: pop 0.45s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden; }
+  .success-badge::after { content: ''; position: absolute; inset: -50%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.5) 50%, transparent 60%); animation: shine 1.1s ease 0.15s 1; }
+  @keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes shine { from { transform: translateX(-100%) rotate(0deg); } to { transform: translateX(100%) rotate(0deg); } }
+  .success-title { font-family: 'Cinzel', serif; color: #FFD700; font-size: 21px; margin-bottom: 7px; letter-spacing: 0.5px; }
+  .success-msg { color: #b8b2cc; font-size: 14px; margin-bottom: 1.4rem; max-width: 280px; line-height: 1.5; }
+  .success-xp { color: #FFD700; font-size: 13px; font-weight: 600; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 6px 18px; margin-bottom: 1.75rem; }
+  .success-close { padding: 13px 30px; border-radius: 12px; border: 1px solid #2c2c46; background: #0d0d1a; color: #ece9f5; font-size: 14px; font-weight: 500; cursor: pointer; }
+
+  .pending-empty, .empty-state { text-align: center; color: #56526b; font-size: 13px; padding: 44px 0; }
+  .pending-section-title { color: #c9b26a; font-size: 13px; margin: 20px 0 10px; font-weight: 700; }
+  .pending-section-title:first-child { margin-top: 0; }
+  .pending-card { display: flex; align-items: center; gap: 12px; background: #0d0d1a; border: 1px solid #23233a; border-radius: 14px; padding: 13px 15px; margin-bottom: 10px; }
+  .pending-card.overdue { border-color: rgba(242,139,139,0.4); }
+  .pending-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,215,0,0.08); display: flex; align-items: center; justify-content: center; font-size: 15px; color: #c9b26a; flex-shrink: 0; }
+  .pending-info { flex: 1; min-width: 0; }
+  .pending-info .name { color: #ece9f5; font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pending-info .date { color: #9a94b0; font-size: 11.5px; margin-top: 3px; }
+  .pending-info .date.overdue { color: #f28b8b; font-weight: 600; }
+  .pending-btn { padding: 9px 14px; border-radius: 9px; border: 1px solid #FFD700; background: rgba(255,215,0,0.08); color: #FFD700; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+
+  .log-filter { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { font-size: 12px; font-weight: 500; padding: 5px 13px; border-radius: 20px; border: 1px solid #23233a; background: #0d0d1a; color: #9a94b0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .filter-btn.active { color: #FFD700; border-color: #FFD700; }
-  .log-refresh { font-size: 12px; color: #7a7a9a; cursor: pointer; background: none; border: 1px solid #2a2a4a; border-radius: 8px; padding: 4px 10px; margin-left: auto; }
-  .log-loading { text-align: center; color: #7a7a9a; font-size: 13px; padding: 20px 0; }
-  .empty-state { text-align: center; color: #5a5a7a; font-size: 13px; padding: 30px 0; }
-  .log-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0d0d1a; border-radius: 10px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
-  .log-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
+  .log-refresh { font-size: 12px; color: #9a94b0; cursor: pointer; background: none; border: 1px solid #23233a; border-radius: 8px; padding: 5px 11px; margin-left: auto; }
+  .log-loading { text-align: center; color: #9a94b0; font-size: 13px; padding: 20px 0; }
+  .log-row { display: flex; align-items: center; gap: 11px; padding: 13px; background: #0d0d1a; border-radius: 12px; margin-bottom: 8px; border: 1px solid #1c1c30; }
+  .log-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
   .log-badge.purchase { background: rgba(139,105,20,0.2); color: #FFD700; border: 1px solid #8B6914; }
   .log-badge.sale { background: rgba(104,211,145,0.1); color: #68d391; border: 1px solid rgba(104,211,145,0.3); }
   .log-badge.grading { background: rgba(214,188,250,0.1); color: #d6bcfa; border: 1px solid rgba(214,188,250,0.3); }
-  .log-item-name { flex: 1; font-size: 14px; color: #e0e0f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .log-item-date { font-size: 12px; color: #7a7a9a; white-space: nowrap; }
+  .log-item-name { flex: 1; font-size: 13.5px; color: #ece9f5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+  .log-item-date { font-size: 11.5px; color: #9a94b0; white-space: nowrap; }
+
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0d0d1a; border-top: 1px solid #23233a; display: flex; z-index: 40; }
+  .bn-item { flex: 1; text-align: center; padding: 11px 4px 9px; color: #74708c; font-size: 10.5px; font-weight: 500; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .bn-item.active { color: #FFD700; }
+  .bn-item i { display: block; font-size: 20px; margin-bottom: 3px; }
+  .bn-badge { position: relative; }
+  .bn-dot { position: absolute; top: 3px; right: calc(50% - 16px); width: 8px; height: 8px; border-radius: 50%; background: #f28b8b; }
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
-    <div class="header-corner tl"></div>
-    <div class="header-corner tr"></div>
-    <div class="header-corner bl"></div>
-    <div class="header-corner br"></div>
+    <div class="header-corner tl"></div><div class="header-corner tr"></div><div class="header-corner bl"></div><div class="header-corner br"></div>
     <h1>BV CAPITAL</h1>
-    <div class="divider-gold"><span>&#9670;</span></div>
-    <p>Collectibles Submission Portal</p>
+    <p>Ben's collectibles submission hub</p>
     <div class="streak-row">
-      <span class="streak-badge" id="streak-display">0 day streak</span>
+      <span class="streak-badge"><i class="ti ti-flame"></i> <span id="streak-display">0 day streak</span></span>
       <div class="xp-wrap"><div class="xp-fill" id="xp-bar" style="width:0%"></div></div>
       <span class="xp-lbl" id="xp-label">0 XP</span>
     </div>
   </div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('purchase')"><span class="tab-icon"><i class="ti ti-shopping-cart"></i></span>Purchase</div>
-    <div class="tab" onclick="switchTab('sale')"><span class="tab-icon"><i class="ti ti-currency-dollar"></i></span>Sale</div>
-    <div class="tab" onclick="switchTab('grading')"><span class="tab-icon"><i class="ti ti-award"></i></span>Grading</div>
-    <div class="tab" onclick="switchTab('history')"><span class="tab-icon"><i class="ti ti-history"></i></span>History</div>
+
+  <div id="screen-home" class="screen active">
+    <div class="menu-grid">
+      <div class="menu-card purchase" onclick="goTo('cat-picker'); startCategoryFlow('purchase')">
+        <div class="menu-card-icon"><i class="ti ti-shopping-cart"></i></div>
+        <div class="menu-card-text"><h3>Purchase</h3><p>Log something you bought</p></div>
+        <div class="menu-card-chev"><i class="ti ti-chevron-right"></i></div>
+        <div class="menu-card-xp">+20 XP</div>
+      </div>
+      <div class="menu-card sale" onclick="goTo('cat-picker'); startCategoryFlow('sale')">
+        <div class="menu-card-icon"><i class="ti ti-currency-dollar"></i></div>
+        <div class="menu-card-text"><h3>Sale</h3><p>Log something you sold</p></div>
+        <div class="menu-card-chev"><i class="ti ti-chevron-right"></i></div>
+        <div class="menu-card-xp">+20 XP</div>
+      </div>
+      <div class="menu-card grading" onclick="goTo('grading-form')">
+        <div class="menu-card-icon"><i class="ti ti-award"></i></div>
+        <div class="menu-card-text"><h3>Grading</h3><p>Send a card for grading</p></div>
+        <div class="menu-card-chev"><i class="ti ti-chevron-right"></i></div>
+        <div class="menu-card-xp">+20 XP</div>
+      </div>
+    </div>
   </div>
-  <div id="purchase" class="form-section active">
-    <div class="form-header"><h3>New Purchase</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item name</label><input type="text" id="p-name" placeholder="e.g. Charizard Holo" /></div>
-      <div class="field"><label>Item type</label><select id="p-type"><option value="">Select...</option><option>TCG Box</option><option>TCG Individual Card</option><option>Manga</option><option>Other</option></select></div>
+
+  <div id="screen-cat-picker" class="screen">
+    <button class="back-btn" onclick="goTo('home')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title" id="cat-picker-title">What is it?</div>
+    <div class="screen-sub">Pick the category that fits best</div>
+    <div class="cat-grid">
+      <div class="cat-card" onclick="pickCategory('TCG Box')"><span class="cat-card-icon"><i class="ti ti-package"></i></span><span class="label">TCG Box</span></div>
+      <div class="cat-card" onclick="pickCategory('TCG Individual')"><span class="cat-card-icon"><i class="ti ti-cards"></i></span><span class="label">TCG Individual Card</span></div>
+      <div class="cat-card" onclick="pickCategory('Manga Individual')"><span class="cat-card-icon"><i class="ti ti-book-2"></i></span><span class="label">Manga Individual</span></div>
+      <div class="cat-card" onclick="pickCategory('Other')"><span class="cat-card-icon"><i class="ti ti-dots"></i></span><span class="label">Other</span></div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Price (AUD)</label><input type="number" id="p-price" placeholder="0.00" inputmode="decimal" /></div>
-      <div class="field"><label>Date purchased</label><input type="date" id="p-date" /></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Platform</label><select id="p-platform"><option value="">Select...</option><option>eBay</option><option>Facebook Marketplace</option><option>Auction</option><option>Other</option></select></div>
-      <div class="field"><label>Invoice status</label><select id="p-invoice"><option value="">Select...</option><option>Attached below</option><option>Will send separately</option><option>No invoice available</option></select></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach invoice (optional)</label>
-      <div class="upload-area"><input type="file" id="p-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('p')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach invoice</p></div>
-      <div class="file-selected" id="p-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="p-notes" placeholder="Condition, seller info, extra details..."></textarea></div>
-    <button class="submit-btn" id="p-btn" onclick="submitForm('purchase')">Submit Purchase <span class="xp-pill">+20 XP</span></button>
   </div>
-  <div id="sale" class="form-section">
-    <div class="form-header"><h3>Record a Sale</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item sold</label><input type="text" id="s-name" placeholder="e.g. Pikachu PSA 10" /></div>
-      <div class="field"><label>Sale price (AUD)</label><input type="number" id="s-price" placeholder="0.00" inputmode="decimal" /></div>
+
+  <div id="screen-purchase-form" class="screen">
+    <button class="back-btn" onclick="goTo('cat-picker')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title" id="p-cat-title">New Purchase</div>
+    <div class="screen-sub">Just attach the invoice — that's the important part</div>
+    <div class="form-card">
+      <div class="field-single">
+        <div class="field"><label>Estimated delivery date<span class="req">*</span></label><input type="date" id="p-delivery" oninput="checkPurchaseReady()" /></div>
+      </div>
+      <div class="field-single">
+        <span class="upload-label-ext">Invoice<span class="req">*</span></span>
+        <div class="upload-box required" id="p-invoice-box">
+          <input type="file" id="p-invoice-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('p-invoice', this, checkPurchaseReady)" />
+          <span class="up-icon"><i class="ti ti-file-invoice"></i></span>
+          <p class="up-label">Tap to attach invoice</p>
+          <p class="up-hint">PDF, JPG or PNG</p>
+          <p class="up-file" id="p-invoice-name"></p>
+        </div>
+      </div>
+      <div class="field-single"><div class="field"><label>Notes (optional)</label><textarea id="p-notes" rows="2" placeholder="Anything else worth noting..."></textarea></div></div>
+      <button class="submit-btn" id="p-btn" disabled onclick="submitPurchase()">Submit Purchase <span class="xp-pill">+20 XP</span></button>
+      <div class="missing-hint" id="p-missing"></div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Date sold</label><input type="date" id="s-date" /></div>
-      <div class="field"><label>Platform</label><select id="s-platform"><option value="">Select...</option><option>eBay</option><option>Marketplace</option><option>Private Sale</option><option>Other</option></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Buyer name (optional)</label><input type="text" id="s-buyer" placeholder="e.g. John S." /></div>
-      <div class="field"><label>Sale docs</label><select id="s-docs"><option value="">Select...</option><option>Attached below</option><option>eBay auto-records</option><option>Will send separately</option><option>No docs available</option></select></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach document (optional)</label>
-      <div class="upload-area"><input type="file" id="s-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('s')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach sale confirmation</p></div>
-      <div class="file-selected" id="s-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="s-notes" placeholder="Any extra sale details..."></textarea></div>
-    <button class="submit-btn" id="s-btn" onclick="submitForm('sale')">Submit Sale <span class="xp-pill">+20 XP</span></button>
   </div>
-  <div id="grading" class="form-section">
-    <div class="form-header"><h3>Grading Submission</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item(s)</label><input type="text" id="g-items" placeholder="e.g. Mewtwo Base Set" /></div>
-      <div class="field"><label>Grading company</label><select id="g-company"><option value="">Select...</option><option>PSA</option><option>BGS (Beckett)</option><option>CGC</option><option>ACE</option><option>Other</option></select></div>
+
+  <div id="screen-sale-form" class="screen">
+    <button class="back-btn" onclick="goTo('cat-picker')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title" id="s-cat-title">Record a Sale</div>
+    <div class="screen-sub">Photo + invoice both required</div>
+    <div class="form-card">
+      <div class="field-single">
+        <div class="field"><label>Date sold<span class="req">*</span></label><input type="date" id="s-date" oninput="checkSaleReady()" /></div>
+      </div>
+      <div class="upload-row">
+        <div>
+          <span class="upload-label-ext">Photo of item<span class="req">*</span></span>
+          <div class="upload-box required" id="s-photo-box">
+            <input type="file" id="s-photo-file" accept=".jpg,.jpeg,.png" onchange="handleFile('s-photo', this, checkSaleReady)" />
+            <span class="up-icon"><i class="ti ti-camera"></i></span>
+            <p class="up-label">Add photo</p>
+            <p class="up-file" id="s-photo-name"></p>
+          </div>
+        </div>
+        <div>
+          <span class="upload-label-ext">Invoice / sale doc<span class="req">*</span></span>
+          <div class="upload-box required" id="s-invoice-box">
+            <input type="file" id="s-invoice-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('s-invoice', this, checkSaleReady)" />
+            <span class="up-icon"><i class="ti ti-file-invoice"></i></span>
+            <p class="up-label">Add invoice</p>
+            <p class="up-file" id="s-invoice-name"></p>
+          </div>
+        </div>
+      </div>
+      <div class="field-single"><div class="field"><label>Notes (optional)</label><textarea id="s-notes" rows="2" placeholder="Buyer, platform, extra details..."></textarea></div></div>
+      <button class="submit-btn" id="s-btn" disabled onclick="submitSale()">Submit Sale <span class="xp-pill">+20 XP</span></button>
+      <div class="missing-hint" id="s-missing"></div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Date sent</label><input type="date" id="g-date" /></div>
-      <div class="field"><label>Cost (AUD)</label><input type="number" id="g-cost" placeholder="0.00" inputmode="decimal" /></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Status</label><select id="g-status"><option value="">Select...</option><option>Sent for grading</option><option>Results received</option></select></div>
-      <div class="field"><label>Grade result</label><input type="text" id="g-grade" placeholder="e.g. PSA 9" /></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach docs (optional)</label>
-      <div class="upload-area"><input type="file" id="g-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('g')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach grading cert</p></div>
-      <div class="file-selected" id="g-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="g-notes" placeholder="Tracking number, reference..."></textarea></div>
-    <button class="submit-btn" id="g-btn" onclick="submitForm('grading')">Submit Grading <span class="xp-pill">+20 XP</span></button>
   </div>
-  <div id="history" class="form-section">
-    <div class="form-header"><h3>Submission History</h3></div>
+
+  <div id="screen-grading-form" class="screen">
+    <button class="back-btn" onclick="goTo('home')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title">Grading Submission</div>
+    <div class="screen-sub">For individual cards only · photo + invoice required</div>
+    <div class="form-card">
+      <div class="field-row">
+        <div class="field"><label>Grading company<span class="req">*</span></label><select id="g-company" onchange="checkGradingReady()"><option value="">Select...</option><option>PSA</option><option>BGS (Beckett)</option><option>CGC</option><option>ACE</option><option>Other</option></select></div>
+        <div class="field"><label>Date sent<span class="req">*</span></label><input type="date" id="g-date" oninput="checkGradingReady()" /></div>
+      </div>
+      <div class="field-single">
+        <div class="field"><label>Expected return date<span class="req">*</span></label><input type="date" id="g-return" oninput="checkGradingReady()" /></div>
+      </div>
+      <div class="upload-row">
+        <div>
+          <span class="upload-label-ext">Photo of card<span class="req">*</span></span>
+          <div class="upload-box required" id="g-photo-box">
+            <input type="file" id="g-photo-file" accept=".jpg,.jpeg,.png" onchange="handleFile('g-photo', this, checkGradingReady)" />
+            <span class="up-icon"><i class="ti ti-camera"></i></span>
+            <p class="up-label">Add photo</p>
+            <p class="up-file" id="g-photo-name"></p>
+          </div>
+        </div>
+        <div>
+          <span class="upload-label-ext">Grading invoice<span class="req">*</span></span>
+          <div class="upload-box required" id="g-invoice-box">
+            <input type="file" id="g-invoice-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('g-invoice', this, checkGradingReady)" />
+            <span class="up-icon"><i class="ti ti-file-invoice"></i></span>
+            <p class="up-label">Add invoice</p>
+            <p class="up-file" id="g-invoice-name"></p>
+          </div>
+        </div>
+      </div>
+      <div class="field-single"><div class="field"><label>Notes (optional)</label><textarea id="g-notes" rows="2" placeholder="Submission reference, extra details..."></textarea></div></div>
+      <button class="submit-btn" id="g-btn" disabled onclick="submitGrading()">Submit Grading <span class="xp-pill">+20 XP</span></button>
+      <div class="missing-hint" id="g-missing"></div>
+    </div>
+  </div>
+
+  <div id="screen-pending" class="screen">
+    <div class="screen-title">Pending Follow-ups</div>
+    <div class="screen-sub">Things waiting on a photo or update</div>
+    <div id="pending-list"><div class="log-loading">Loading...</div></div>
+  </div>
+
+  <div id="screen-complete-photo" class="screen">
+    <button class="back-btn" onclick="goTo('pending')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title">Upload Photo</div>
+    <div class="screen-sub" id="cp-item-name"></div>
+    <div class="form-card">
+      <div class="upload-box required" id="cp-photo-box">
+        <input type="file" id="cp-photo-file" accept=".jpg,.jpeg,.png" onchange="handleFile('cp-photo', this, checkCompletePhotoReady)" />
+        <span class="up-icon"><i class="ti ti-camera"></i></span>
+        <p class="up-label">Add the exact photo of the item</p>
+        <p class="up-file" id="cp-photo-name"></p>
+      </div>
+      <button class="submit-btn" id="cp-btn" disabled onclick="submitCompletePhoto()" style="margin-top:14px;">Confirm Delivery <span class="xp-pill">+10 XP</span></button>
+    </div>
+  </div>
+
+  <div id="screen-complete-grading" class="screen">
+    <button class="back-btn" onclick="goTo('pending')"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="screen-title">Mark as Received</div>
+    <div class="screen-sub" id="cg-item-name"></div>
+    <div class="form-card">
+      <div class="field-single"><div class="field"><label>Grade result</label><input type="text" id="cg-grade" placeholder="e.g. PSA 9" /></div></div>
+      <span class="upload-label-ext">Photo of graded card (optional)</span>
+      <div class="upload-box" id="cg-photo-box">
+        <input type="file" id="cg-photo-file" accept=".jpg,.jpeg,.png" onchange="handleFile('cg-photo', this, null)" />
+        <span class="up-icon"><i class="ti ti-camera"></i></span>
+        <p class="up-label">Add photo</p>
+        <p class="up-file" id="cg-photo-name"></p>
+      </div>
+      <button class="submit-btn" onclick="submitCompleteGrading()" style="margin-top:14px;">Confirm Received <span class="xp-pill">+10 XP</span></button>
+    </div>
+  </div>
+
+  <div id="screen-history" class="screen">
+    <div class="screen-title">History</div>
     <div class="log-filter">
       <button class="filter-btn active" onclick="filterLog('all')">All</button>
       <button class="filter-btn" onclick="filterLog('purchase')">Purchases</button>
@@ -175,80 +329,194 @@
     </div>
     <div id="log-items"><div class="log-loading">Loading history...</div></div>
   </div>
-  <div class="toast ok" id="toast-ok"></div>
-  <div class="toast err" id="toast-err"></div>
+
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-badge"><i class="ti ti-check"></i></div>
+    <div class="success-title" id="success-title">Nice one, Ben!</div>
+    <div class="success-msg" id="success-msg">Logged successfully.</div>
+    <div class="success-xp" id="success-xp">+20 XP</div>
+    <button class="success-close" onclick="closeSuccess()">Done</button>
+  </div>
 </div>
+
+<div class="bottom-nav">
+  <div class="bn-item active" id="nav-home" onclick="goTo('home')"><i class="ti ti-home"></i>Home</div>
+  <div class="bn-item bn-badge" id="nav-pending" onclick="goTo('pending')"><i class="ti ti-clock"></i>Pending<span class="bn-dot" id="pending-dot" style="display:none;"></span></div>
+  <div class="bn-item" id="nav-history" onclick="goTo('history')"><i class="ti ti-history"></i>History</div>
+</div>
+
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOFTmL9TUhlp5oilAaq784O7Q9NKeYFlWSoI_OAx82iATKT_moyrf5gOos9eFu6HFCQQ/exec';
-  const CACHE_KEY = 'bvcapital_history';
-  const STATS_KEY = 'bvcapital_stats';
+  const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+  const CACHE_KEY = 'bvcapital_history_v3';
+  const STATS_KEY = 'bvcapital_stats_v3';
   let xp = 0, streak = 0, lastDate = null;
   let allSubmissions = [];
+  let pendingPhotos = [];
+  let pendingGrading = [];
   let currentFilter = 'all';
-  const fileData = { p: null, s: null, g: null };
+  let activeCompleteId = null;
+  let flowMode = null;
+  let currentCategory = null;
+  const files = {};
 
-  try { const s = JSON.parse(localStorage.getItem(STATS_KEY)||'{}'); xp=s.xp||0; streak=s.streak||0; lastDate=s.lastDate||null; updateStats(); } catch(e) {}
+  try { const s = JSON.parse(localStorage.getItem(STATS_KEY)||'{}'); xp=s.xp||0; streak=s.streak||0; lastDate=s.lastDate||null; } catch(e) {}
   try { allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY)||'[]'); } catch(e) {}
+  updateStats();
 
-  function switchTab(id) {
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['purchase','sale','grading','history'][i] === id));
-    document.querySelectorAll('.form-section').forEach(s => s.classList.toggle('active', s.id === id));
-    if (id === 'history') loadHistory();
+  function goTo(screen) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-'+screen).classList.add('active');
+    document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+    if (screen === 'home') document.getElementById('nav-home').classList.add('active');
+    if (screen === 'pending') { document.getElementById('nav-pending').classList.add('active'); loadPending(); }
+    if (screen === 'history') { document.getElementById('nav-history').classList.add('active'); loadHistory(); }
+    window.scrollTo(0,0);
   }
 
-  function handleFile(prefix) {
-    const file = document.getElementById(prefix+'-file').files[0];
+  function startCategoryFlow(mode) {
+    flowMode = mode;
+    document.getElementById('cat-picker-title').textContent = mode === 'purchase' ? 'What did you buy?' : 'What did you sell?';
+  }
+
+  function pickCategory(category) {
+    currentCategory = category;
+    if (flowMode === 'purchase') {
+      document.getElementById('p-cat-title').textContent = 'New Purchase — ' + category;
+      goTo('purchase-form');
+    } else {
+      document.getElementById('s-cat-title').textContent = 'Record a Sale — ' + category;
+      goTo('sale-form');
+    }
+  }
+
+  function handleFile(key, input, checkFn) {
+    const file = input.files[0];
+    const boxId = key + '-box';
+    const nameId = key + '-name';
     if (!file) return;
-    document.getElementById(prefix+'-file-name').textContent = 'Attached: '+file.name;
+    document.getElementById(nameId).textContent = file.name;
+    document.getElementById(boxId).classList.add('done');
     const reader = new FileReader();
-    reader.onload = e => { fileData[prefix] = { name: file.name, type: file.type, data: e.target.result.split(',')[1] }; };
+    reader.onload = e => {
+      files[key] = { name: file.name, type: file.type, data: e.target.result.split(',')[1] };
+      if (checkFn) checkFn();
+    };
     reader.readAsDataURL(file);
   }
 
-  async function submitForm(type) {
-    let payload = { type }, name = '';
-    const p = type[0];
-    if (type === 'purchase') {
-      name = document.getElementById('p-name').value.trim();
-      if (!name) { alert('Please enter an item name.'); return; }
-      payload = { type, itemName: name, itemType: document.getElementById('p-type').value, price: document.getElementById('p-price').value, date: document.getElementById('p-date').value, platform: document.getElementById('p-platform').value, invoice: document.getElementById('p-invoice').value, notes: document.getElementById('p-notes').value, file: fileData['p'] };
-    } else if (type === 'sale') {
-      name = document.getElementById('s-name').value.trim();
-      if (!name) { alert('Please enter the item sold.'); return; }
-      payload = { type, itemName: name, price: document.getElementById('s-price').value, date: document.getElementById('s-date').value, platform: document.getElementById('s-platform').value, buyer: document.getElementById('s-buyer').value, docs: document.getElementById('s-docs').value, notes: document.getElementById('s-notes').value, file: fileData['s'] };
-    } else if (type === 'grading') {
-      name = document.getElementById('g-items').value.trim();
-      if (!name) { alert('Please enter the item(s).'); return; }
-      payload = { type, itemName: name, company: document.getElementById('g-company').value, date: document.getElementById('g-date').value, cost: document.getElementById('g-cost').value, status: document.getElementById('g-status').value, grade: document.getElementById('g-grade').value, notes: document.getElementById('g-notes').value, file: fileData['g'] };
-    }
-    const btn = document.getElementById(p+'-btn');
-    btn.disabled = true; btn.textContent = 'Sending...';
-
-    // Send with no-cors — always treat as success since no-cors never throws
-    try {
-      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
-      await new Promise(r => setTimeout(r, 2000));
-    } catch(e) {}
-
-    onSuccess(type, name, payload, btn);
-    fileData[p] = null;
+  function checkPurchaseReady() {
+    const ok = document.getElementById('p-delivery').value && files['p-invoice'];
+    document.getElementById('p-btn').disabled = !ok;
+    document.getElementById('p-missing').textContent = ok ? '' : 'Delivery date and invoice are both required to submit';
+  }
+  function checkSaleReady() {
+    const ok = document.getElementById('s-date').value && files['s-photo'] && files['s-invoice'];
+    document.getElementById('s-btn').disabled = !ok;
+    document.getElementById('s-missing').textContent = ok ? '' : 'Date, photo, and invoice are all required to submit';
+  }
+  function checkGradingReady() {
+    const ok = document.getElementById('g-company').value && document.getElementById('g-date').value && document.getElementById('g-return').value && files['g-photo'] && files['g-invoice'];
+    document.getElementById('g-btn').disabled = !ok;
+    document.getElementById('g-missing').textContent = ok ? '' : 'Photo and invoice are both required to submit';
+  }
+  function checkCompletePhotoReady() {
+    document.getElementById('cp-btn').disabled = !files['cp-photo'];
   }
 
-  function onSuccess(type, name, payload, btn) {
-    xp += 20;
+  async function postData(payload) {
+    try {
+      await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+      await new Promise(r => setTimeout(r, 1500));
+      return true;
+    } catch(e) { return false; }
+  }
+
+  async function submitPurchase() {
+    const btn = document.getElementById('p-btn'); btn.disabled = true; btn.textContent = 'Sending...';
+    const payload = {
+      action: 'submit', type: 'purchase', category: currentCategory,
+      estDelivery: document.getElementById('p-delivery').value,
+      notes: document.getElementById('p-notes').value,
+      invoice: files['p-invoice']
+    };
+    await postData(payload);
+    afterSubmit('purchase', payload, 20, 'Purchase logged! I\'ll check in around the delivery date.');
+    resetForm('purchase');
+    btn.innerHTML = 'Submit Purchase <span class="xp-pill">+20 XP</span>';
+  }
+
+  async function submitSale() {
+    const btn = document.getElementById('s-btn'); btn.disabled = true; btn.textContent = 'Sending...';
+    const payload = {
+      action: 'submit', type: 'sale', category: currentCategory,
+      dateSold: document.getElementById('s-date').value,
+      notes: document.getElementById('s-notes').value,
+      photo: files['s-photo'], invoice: files['s-invoice']
+    };
+    await postData(payload);
+    afterSubmit('sale', payload, 20, 'Sale recorded — nice work!');
+    resetForm('sale');
+    btn.innerHTML = 'Submit Sale <span class="xp-pill">+20 XP</span>';
+  }
+
+  async function submitGrading() {
+    const btn = document.getElementById('g-btn'); btn.disabled = true; btn.textContent = 'Sending...';
+    const payload = {
+      action: 'submit', type: 'grading',
+      company: document.getElementById('g-company').value,
+      dateSent: document.getElementById('g-date').value,
+      expectedReturn: document.getElementById('g-return').value,
+      notes: document.getElementById('g-notes').value,
+      photo: files['g-photo'], invoice: files['g-invoice']
+    };
+    await postData(payload);
+    afterSubmit('grading', payload, 20, 'Grading submission logged — fingers crossed for a 10!');
+    resetForm('grading');
+    btn.innerHTML = 'Submit Grading <span class="xp-pill">+20 XP</span>';
+  }
+
+  async function submitCompletePhoto() {
+    const btn = document.getElementById('cp-btn'); btn.disabled = true; btn.textContent = 'Sending...';
+    const payload = { action: 'complete_purchase_photo', id: activeCompleteId, photo: files['cp-photo'] };
+    await postData(payload);
+    showSuccess('Delivered!', 'Thanks for confirming — photo sent through.', 10);
+    files['cp-photo'] = null;
+    document.getElementById('cp-photo-name').textContent = '';
+    document.getElementById('cp-photo-box').classList.remove('done');
+    btn.innerHTML = 'Confirm Delivery <span class="xp-pill">+10 XP</span>';
+    goTo('pending');
+  }
+
+  async function submitCompleteGrading() {
+    const payload = { action: 'complete_grading', id: activeCompleteId, grade: document.getElementById('cg-grade').value, photo: files['cg-photo'] || null };
+    await postData(payload);
+    showSuccess('Marked Received!', 'Great — logged the result.', 10);
+    files['cg-photo'] = null;
+    document.getElementById('cg-photo-name').textContent = '';
+    document.getElementById('cg-grade').value = '';
+    goTo('pending');
+  }
+
+  function afterSubmit(type, payload, xpGain, msg) {
+    const entry = { type, category: payload.category||'', invoiceName: (payload.invoice&&payload.invoice.name)||'', date: payload.estDelivery||payload.dateSold||payload.dateSent||new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
+    allSubmissions.unshift(entry);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
+    showSuccess('Nice one, Ben!', msg, xpGain);
+    goTo('home');
+  }
+
+  function showSuccess(title, msg, xpGain) {
+    xp += xpGain;
     const today = new Date().toDateString();
     if (lastDate !== today) { streak++; lastDate = today; }
     updateStats();
     try { localStorage.setItem(STATS_KEY, JSON.stringify({ xp, streak, lastDate })); } catch(e) {}
-    const msgs = { purchase: ['Purchase logged! Nice find, Ben!', 'New acquisition recorded.', 'Purchase locked in.'], sale: ['Sale recorded! Great work.', 'Sold! Stack that profit!', 'Sale logged.'], grading: ['Grading logged!', 'All recorded.', 'Fingers crossed for a 10!'] };
-    showToast('ok', msgs[type][Math.floor(Math.random()*3)]);
-    clearForm(type);
-    btn.disabled = false;
-    btn.innerHTML = 'Submit '+cap(type)+' <span class="xp-pill">+20 XP</span>';
-    const entry = { type, itemName: name, date: payload.date||new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
-    allSubmissions.unshift(entry);
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
+    document.getElementById('success-title').textContent = title;
+    document.getElementById('success-msg').textContent = msg;
+    document.getElementById('success-xp').textContent = '+'+xpGain+' XP';
+    document.getElementById('success-overlay').classList.add('show');
   }
+  function closeSuccess() { document.getElementById('success-overlay').classList.remove('show'); }
 
   function updateStats() {
     document.getElementById('xp-bar').style.width = Math.min((xp%100),100)+'%';
@@ -256,18 +524,83 @@
     document.getElementById('streak-display').textContent = streak+' day streak';
   }
 
-  function clearForm(type) {
-    const p = type[0];
-    ({purchase:['p-name','p-price','p-date','p-notes'],sale:['s-name','s-price','s-date','s-buyer','s-notes'],grading:['g-items','g-cost','g-date','g-grade','g-notes']})[type].forEach(id => document.getElementById(id).value='');
-    ({purchase:['p-type','p-platform','p-invoice'],sale:['s-platform','s-docs'],grading:['g-company','g-status']})[type].forEach(id => document.getElementById(id).selectedIndex=0);
-    document.getElementById(p+'-file').value='';
-    document.getElementById(p+'-file-name').textContent='';
+  function resetForm(type) {
+    if (type === 'purchase') {
+      document.getElementById('p-delivery').value=''; document.getElementById('p-notes').value='';
+      document.getElementById('p-invoice-file').value=''; document.getElementById('p-invoice-name').textContent=''; document.getElementById('p-invoice-box').classList.remove('done');
+      files['p-invoice']=null; document.getElementById('p-btn').disabled = true;
+    } else if (type === 'sale') {
+      document.getElementById('s-date').value=''; document.getElementById('s-notes').value='';
+      document.getElementById('s-photo-file').value=''; document.getElementById('s-photo-name').textContent=''; document.getElementById('s-photo-box').classList.remove('done');
+      document.getElementById('s-invoice-file').value=''; document.getElementById('s-invoice-name').textContent=''; document.getElementById('s-invoice-box').classList.remove('done');
+      files['s-photo']=null; files['s-invoice']=null; document.getElementById('s-btn').disabled = true;
+    } else if (type === 'grading') {
+      document.getElementById('g-date').value=''; document.getElementById('g-return').value=''; document.getElementById('g-notes').value=''; document.getElementById('g-company').selectedIndex=0;
+      document.getElementById('g-photo-file').value=''; document.getElementById('g-photo-name').textContent=''; document.getElementById('g-photo-box').classList.remove('done');
+      document.getElementById('g-invoice-file').value=''; document.getElementById('g-invoice-name').textContent=''; document.getElementById('g-invoice-box').classList.remove('done');
+      files['g-photo']=null; files['g-invoice']=null; document.getElementById('g-btn').disabled = true;
+    }
   }
 
-  function showToast(kind, msg) {
-    const el = document.getElementById('toast-'+kind);
-    el.textContent = msg; el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 4000);
+  function fmtDate(d) {
+    if (!d) return '';
+    try { return new Date(d).toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}); } catch(e) { return d; }
+  }
+  function isOverdue(d) { if(!d) return false; const t = new Date(); t.setHours(0,0,0,0); return new Date(d) < t; }
+
+  async function loadPending() {
+    document.getElementById('pending-list').innerHTML = '<div class="log-loading">Loading...</div>';
+    try {
+      const res = await fetch(SCRIPT_URL + '?action=pending');
+      const data = await res.json();
+      pendingPhotos = data.pendingPhotos || [];
+      pendingGrading = data.pendingGrading || [];
+    } catch(e) { pendingPhotos = []; pendingGrading = []; }
+    renderPending();
+  }
+
+  function renderPending() {
+    const dot = document.getElementById('pending-dot');
+    dot.style.display = (pendingPhotos.length + pendingGrading.length) ? 'block' : 'none';
+    if (!pendingPhotos.length && !pendingGrading.length) {
+      document.getElementById('pending-list').innerHTML = '<div class="pending-empty">All caught up — nothing pending!</div>';
+      return;
+    }
+    let html = '';
+    if (pendingPhotos.length) {
+      html += '<div class="pending-section-title">Awaiting Delivery Photo</div>';
+      pendingPhotos.forEach(p => {
+        const over = isOverdue(p.estDelivery);
+        html += '<div class="pending-card '+(over?'overdue':'')+'"><div class="pending-icon"><i class="ti ti-'+catIcon(p.category)+'"></i></div><div class="pending-info"><div class="name">'+esc(p.invoiceName || p.category || 'Purchase')+'</div><div class="date '+(over?'overdue':'')+'">'+(over?'Overdue — ':'Expected ')+fmtDate(p.estDelivery)+'</div></div><button class="pending-btn" onclick="openCompletePhoto(\''+p.id+'\',\''+escJs(p.invoiceName||p.category||'this purchase')+'\')">Add Photo</button></div>';
+      });
+    }
+    if (pendingGrading.length) {
+      html += '<div class="pending-section-title">Awaiting Grading Return</div>';
+      pendingGrading.forEach(g => {
+        const over = isOverdue(g.expectedReturn);
+        html += '<div class="pending-card '+(over?'overdue':'')+'"><div class="pending-icon"><i class="ti ti-award"></i></div><div class="pending-info"><div class="name">'+esc(g.invoiceName || g.company || 'Grading submission')+'</div><div class="date '+(over?'overdue':'')+'">'+(over?'Overdue — ':'Expected ')+fmtDate(g.expectedReturn)+'</div></div><button class="pending-btn" onclick="openCompleteGrading(\''+g.id+'\',\''+escJs(g.invoiceName||g.company||'this submission')+'\')">Mark Received</button></div>';
+      });
+    }
+    document.getElementById('pending-list').innerHTML = html;
+  }
+
+  function catIcon(cat) {
+    if (cat === 'TCG Box') return 'package';
+    if (cat === 'TCG Individual') return 'cards';
+    if (cat === 'Manga Individual') return 'book-2';
+    return 'dots';
+  }
+
+  function openCompletePhoto(id, label) {
+    activeCompleteId = id;
+    document.getElementById('cp-item-name').textContent = label;
+    document.getElementById('cp-btn').disabled = true;
+    goTo('complete-photo');
+  }
+  function openCompleteGrading(id, label) {
+    activeCompleteId = id;
+    document.getElementById('cg-item-name').textContent = label;
+    goTo('complete-grading');
   }
 
   function filterLog(f) {
@@ -280,12 +613,9 @@
     if (allSubmissions.length) renderLog();
     else document.getElementById('log-items').innerHTML = '<div class="log-loading">Loading...</div>';
     try {
-      const res = await fetch(SCRIPT_URL);
+      const res = await fetch(SCRIPT_URL + '?action=history');
       const data = await res.json();
-      allSubmissions = [];
-      (data.purchases||[]).forEach(r => allSubmissions.push({ type:'purchase', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
-      (data.sales||[]).forEach(r => allSubmissions.push({ type:'sale', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
-      (data.grading||[]).forEach(r => allSubmissions.push({ type:'grading', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
+      allSubmissions = (data.records || []).map(r => ({ type: r.type, category: r.category, invoiceName: r.invoiceName, date: r.date, timestamp: r.timestamp }));
       allSubmissions.sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp));
       try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
       renderLog();
@@ -298,292 +628,16 @@
     const filtered = currentFilter==='all' ? allSubmissions : allSubmissions.filter(s => s.type===currentFilter);
     if (!filtered.length) { document.getElementById('log-items').innerHTML = '<div class="empty-state">No submissions yet.</div>'; return; }
     document.getElementById('log-items').innerHTML = filtered.map(s => {
-      const d = s.date || (s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}) : '');
-      return '<div class="log-row"><span class="log-badge '+s.type+'">'+cap(s.type)+'</span><span class="log-item-name">'+(s.itemName||'')+'</span><span class="log-item-date">'+d+'</span></div>';
+      const label = s.invoiceName || s.category || cap(s.type);
+      return '<div class="log-row"><span class="log-badge '+s.type+'">'+cap(s.type)+'</span><span class="log-item-name">'+esc(label)+'</span><span class="log-item-date">'+fmtDate(s.date)+'</span></div>';
     }).join('');
   }
 
   function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
+  function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+  function escJs(s) { return (s||'').replace(/'/g,"\\'"); }
 
-  document.getElementById('p-date').valueAsDate = new Date();
-  document.getElementById('s-date').valueAsDate = new Date();
-  document.getElementById('g-date').valueAsDate = new Date();
-</script>
-</body>
-</html>  .form-header p { color: #7a7a9a; font-size: clamp(12px, 3vw, 13px); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-  @media (max-width: 380px) { .field-row { grid-template-columns: 1fr; } }
-  .field-single { margin-bottom: 10px; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 12px; color: #8B6914; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
-  .field input, .field select, .field textarea { width: 100%; border-radius: 10px; border: 1px solid #2a2a4a; background: #0a0a14; color: #e0e0f0; font-size: 16px; padding: 12px 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; transition: border-color 0.2s; -webkit-appearance: none; appearance: none; }
-  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #8B6914; }
-  .field textarea { resize: vertical; min-height: 80px; }
-  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238B6914' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-color: #0a0a14; padding-right: 36px; }
-  .field select option { background: #0d0d1a; color: #e0e0f0; }
-  .upload-area { border: 1px dashed #2a2a4a; border-radius: 10px; padding: 18px; text-align: center; cursor: pointer; transition: all 0.2s; background: #0a0a14; position: relative; }
-  .upload-area:hover, .upload-area:active { border-color: #8B6914; }
-  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-area p { color: #7a7a9a; font-size: 14px; }
-  .upload-icon { font-size: 24px; color: #8B6914; display: block; margin-bottom: 6px; }
-  .file-selected { color: #FFD700; font-size: 13px; margin-top: 6px; word-break: break-all; }
-  .submit-btn { width: 100%; margin-top: 1rem; padding: 16px; background: #0d0d1a; color: #FFD700; border: 1px solid #FFD700; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-family: 'Cinzel', serif; letter-spacing: 1px; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .submit-btn:active { transform: scale(0.98); background: rgba(139,105,20,0.3); }
-  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .xp-pill { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); border-radius: 20px; padding: 1px 8px; font-size: 12px; margin-left: 6px; font-family: -apple-system, sans-serif; }
-  .toast { display: none; margin-top: 1rem; padding: 14px 16px; border-radius: 10px; font-size: 14px; text-align: center; }
-  .toast.ok { background: #0d0d1a; border: 1px solid #8B6914; color: #FFD700; }
-  .toast.err { background: #1a0d0d; border: 1px solid #4a2a2a; color: #fc8181; }
-  .toast.show { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, #8B6914, transparent); margin: 1.25rem 0; }
-  .log-filter { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
-  .filter-btn { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid #2a2a4a; background: #0d0d1a; color: #7a7a9a; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .filter-btn.active { color: #FFD700; border-color: #FFD700; }
-  .log-refresh { font-size: 12px; color: #7a7a9a; cursor: pointer; background: none; border: 1px solid #2a2a4a; border-radius: 8px; padding: 4px 10px; margin-left: auto; }
-  .log-loading { text-align: center; color: #7a7a9a; font-size: 13px; padding: 20px 0; }
-  .empty-state { text-align: center; color: #5a5a7a; font-size: 13px; padding: 30px 0; }
-  .log-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0d0d1a; border-radius: 10px; margin-bottom: 8px; border: 1px solid #1a1a2e; }
-  .log-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; white-space: nowrap; }
-  .log-badge.purchase { background: rgba(139,105,20,0.2); color: #FFD700; border: 1px solid #8B6914; }
-  .log-badge.sale { background: rgba(104,211,145,0.1); color: #68d391; border: 1px solid rgba(104,211,145,0.3); }
-  .log-badge.grading { background: rgba(214,188,250,0.1); color: #d6bcfa; border: 1px solid rgba(214,188,250,0.3); }
-  .log-item-name { flex: 1; font-size: 14px; color: #e0e0f0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .log-item-date { font-size: 12px; color: #7a7a9a; white-space: nowrap; }
-</style>
-</head>
-<body>
-<div class="app">
-  <div class="header">
-    <div class="header-corner tl"></div>
-    <div class="header-corner tr"></div>
-    <div class="header-corner bl"></div>
-    <div class="header-corner br"></div>
-    <h1>BV CAPITAL</h1>
-    <div class="divider-gold"><span>&#9670;</span></div>
-    <p>Collectibles Submission Portal</p>
-    <div class="streak-row">
-      <span class="streak-badge" id="streak-display">0 day streak</span>
-      <div class="xp-wrap"><div class="xp-fill" id="xp-bar" style="width:0%"></div></div>
-      <span class="xp-lbl" id="xp-label">0 XP</span>
-    </div>
-  </div>
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('purchase')"><span class="tab-icon"><i class="ti ti-shopping-cart"></i></span>Purchase</div>
-    <div class="tab" onclick="switchTab('sale')"><span class="tab-icon"><i class="ti ti-currency-dollar"></i></span>Sale</div>
-    <div class="tab" onclick="switchTab('grading')"><span class="tab-icon"><i class="ti ti-award"></i></span>Grading</div>
-    <div class="tab" onclick="switchTab('history')"><span class="tab-icon"><i class="ti ti-history"></i></span>History</div>
-  </div>
-  <div id="purchase" class="form-section active">
-    <div class="form-header"><h3>New Purchase</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item name</label><input type="text" id="p-name" placeholder="e.g. Charizard Holo" /></div>
-      <div class="field"><label>Item type</label><select id="p-type"><option value="">Select...</option><option>TCG Box</option><option>TCG Individual Card</option><option>Manga</option><option>Other</option></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Price (AUD)</label><input type="number" id="p-price" placeholder="0.00" inputmode="decimal" /></div>
-      <div class="field"><label>Date purchased</label><input type="date" id="p-date" /></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Platform</label><select id="p-platform"><option value="">Select...</option><option>eBay</option><option>Facebook Marketplace</option><option>Auction</option><option>Other</option></select></div>
-      <div class="field"><label>Invoice status</label><select id="p-invoice"><option value="">Select...</option><option>Attached below</option><option>Will send separately</option><option>No invoice available</option></select></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach invoice (optional)</label>
-      <div class="upload-area"><input type="file" id="p-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('p')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach invoice</p></div>
-      <div class="file-selected" id="p-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="p-notes" placeholder="Condition, seller info, extra details..."></textarea></div>
-    <button class="submit-btn" id="p-btn" onclick="submitForm('purchase')">Submit Purchase <span class="xp-pill">+20 XP</span></button>
-  </div>
-  <div id="sale" class="form-section">
-    <div class="form-header"><h3>Record a Sale</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item sold</label><input type="text" id="s-name" placeholder="e.g. Pikachu PSA 10" /></div>
-      <div class="field"><label>Sale price (AUD)</label><input type="number" id="s-price" placeholder="0.00" inputmode="decimal" /></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Date sold</label><input type="date" id="s-date" /></div>
-      <div class="field"><label>Platform</label><select id="s-platform"><option value="">Select...</option><option>eBay</option><option>Marketplace</option><option>Private Sale</option><option>Other</option></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Buyer name (optional)</label><input type="text" id="s-buyer" placeholder="e.g. John S." /></div>
-      <div class="field"><label>Sale docs</label><select id="s-docs"><option value="">Select...</option><option>Attached below</option><option>eBay auto-records</option><option>Will send separately</option><option>No docs available</option></select></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach document (optional)</label>
-      <div class="upload-area"><input type="file" id="s-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('s')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach sale confirmation</p></div>
-      <div class="file-selected" id="s-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="s-notes" placeholder="Any extra sale details..."></textarea></div>
-    <button class="submit-btn" id="s-btn" onclick="submitForm('sale')">Submit Sale <span class="xp-pill">+20 XP</span></button>
-  </div>
-  <div id="grading" class="form-section">
-    <div class="form-header"><h3>Grading Submission</h3></div>
-    <div class="field-row">
-      <div class="field"><label>Item(s)</label><input type="text" id="g-items" placeholder="e.g. Mewtwo Base Set" /></div>
-      <div class="field"><label>Grading company</label><select id="g-company"><option value="">Select...</option><option>PSA</option><option>BGS (Beckett)</option><option>CGC</option><option>ACE</option><option>Other</option></select></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Date sent</label><input type="date" id="g-date" /></div>
-      <div class="field"><label>Cost (AUD)</label><input type="number" id="g-cost" placeholder="0.00" inputmode="decimal" /></div>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>Status</label><select id="g-status"><option value="">Select...</option><option>Sent for grading</option><option>Results received</option></select></div>
-      <div class="field"><label>Grade result</label><input type="text" id="g-grade" placeholder="e.g. PSA 9" /></div>
-    </div>
-    <div class="field field-single">
-      <label>Attach docs (optional)</label>
-      <div class="upload-area"><input type="file" id="g-file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleFile('g')" /><span class="upload-icon"><i class="ti ti-upload"></i></span><p>Tap to attach grading cert</p></div>
-      <div class="file-selected" id="g-file-name"></div>
-    </div>
-    <div class="field field-single"><label>Notes (optional)</label><textarea id="g-notes" placeholder="Tracking number, reference..."></textarea></div>
-    <button class="submit-btn" id="g-btn" onclick="submitForm('grading')">Submit Grading <span class="xp-pill">+20 XP</span></button>
-  </div>
-  <div id="history" class="form-section">
-    <div class="form-header"><h3>Submission History</h3></div>
-    <div class="log-filter">
-      <button class="filter-btn active" onclick="filterLog('all')">All</button>
-      <button class="filter-btn" onclick="filterLog('purchase')">Purchases</button>
-      <button class="filter-btn" onclick="filterLog('sale')">Sales</button>
-      <button class="filter-btn" onclick="filterLog('grading')">Grading</button>
-      <button class="log-refresh" onclick="loadHistory()"><i class="ti ti-refresh"></i> Refresh</button>
-    </div>
-    <div id="log-items"><div class="log-loading">Loading history...</div></div>
-  </div>
-  <div class="toast ok" id="toast-ok"></div>
-  <div class="toast err" id="toast-err"></div>
-</div>
-<script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDW_ziLPlY1F9UdGB0PCx9nh-FXXtyeG0ZApT08aGV2iKXh8hTriWLLJKJHkh-80c21g/exec';
-  const CACHE_KEY = 'bvcapital_history';
-  const STATS_KEY = 'bvcapital_stats';
-  let xp = 0, streak = 0, lastDate = null;
-  let allSubmissions = [];
-  let currentFilter = 'all';
-  const fileData = { p: null, s: null, g: null };
-
-  try { const s = JSON.parse(localStorage.getItem(STATS_KEY)||'{}'); xp=s.xp||0; streak=s.streak||0; lastDate=s.lastDate||null; updateStats(); } catch(e) {}
-  try { allSubmissions = JSON.parse(localStorage.getItem(CACHE_KEY)||'[]'); } catch(e) {}
-
-  function switchTab(id) {
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['purchase','sale','grading','history'][i] === id));
-    document.querySelectorAll('.form-section').forEach(s => s.classList.toggle('active', s.id === id));
-    if (id === 'history') loadHistory();
-  }
-
-  function handleFile(prefix) {
-    const file = document.getElementById(prefix+'-file').files[0];
-    if (!file) return;
-    document.getElementById(prefix+'-file-name').textContent = 'Attached: '+file.name;
-    const reader = new FileReader();
-    reader.onload = e => { fileData[prefix] = { name: file.name, type: file.type, data: e.target.result.split(',')[1] }; };
-    reader.readAsDataURL(file);
-  }
-
-  async function submitForm(type) {
-    let payload = { type }, name = '';
-    const p = type[0];
-    if (type === 'purchase') {
-      name = document.getElementById('p-name').value.trim();
-      if (!name) { alert('Please enter an item name.'); return; }
-      payload = { type, itemName: name, itemType: document.getElementById('p-type').value, price: document.getElementById('p-price').value, date: document.getElementById('p-date').value, platform: document.getElementById('p-platform').value, invoice: document.getElementById('p-invoice').value, notes: document.getElementById('p-notes').value, file: fileData['p'] };
-    } else if (type === 'sale') {
-      name = document.getElementById('s-name').value.trim();
-      if (!name) { alert('Please enter the item sold.'); return; }
-      payload = { type, itemName: name, price: document.getElementById('s-price').value, date: document.getElementById('s-date').value, platform: document.getElementById('s-platform').value, buyer: document.getElementById('s-buyer').value, docs: document.getElementById('s-docs').value, notes: document.getElementById('s-notes').value, file: fileData['s'] };
-    } else if (type === 'grading') {
-      name = document.getElementById('g-items').value.trim();
-      if (!name) { alert('Please enter the item(s).'); return; }
-      payload = { type, itemName: name, company: document.getElementById('g-company').value, date: document.getElementById('g-date').value, cost: document.getElementById('g-cost').value, status: document.getElementById('g-status').value, grade: document.getElementById('g-grade').value, notes: document.getElementById('g-notes').value, file: fileData['g'] };
-    }
-    const btn = document.getElementById(p+'-btn');
-    btn.disabled = true; btn.textContent = 'Sending...';
-
-    // Send with no-cors — always treat as success since no-cors never throws
-    try {
-      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
-      await new Promise(r => setTimeout(r, 2000));
-    } catch(e) {}
-
-    onSuccess(type, name, payload, btn);
-    fileData[p] = null;
-  }
-
-  function onSuccess(type, name, payload, btn) {
-    xp += 20;
-    const today = new Date().toDateString();
-    if (lastDate !== today) { streak++; lastDate = today; }
-    updateStats();
-    try { localStorage.setItem(STATS_KEY, JSON.stringify({ xp, streak, lastDate })); } catch(e) {}
-    const msgs = { purchase: ['Purchase logged! Nice find, Ben!', 'New acquisition recorded.', 'Purchase locked in.'], sale: ['Sale recorded! Great work.', 'Sold! Stack that profit!', 'Sale logged.'], grading: ['Grading logged!', 'All recorded.', 'Fingers crossed for a 10!'] };
-    showToast('ok', msgs[type][Math.floor(Math.random()*3)]);
-    clearForm(type);
-    btn.disabled = false;
-    btn.innerHTML = 'Submit '+cap(type)+' <span class="xp-pill">+20 XP</span>';
-    const entry = { type, itemName: name, date: payload.date||new Date().toISOString().split('T')[0], timestamp: new Date().toISOString() };
-    allSubmissions.unshift(entry);
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
-  }
-
-  function updateStats() {
-    document.getElementById('xp-bar').style.width = Math.min((xp%100),100)+'%';
-    document.getElementById('xp-label').textContent = xp+' XP';
-    document.getElementById('streak-display').textContent = streak+' day streak';
-  }
-
-  function clearForm(type) {
-    const p = type[0];
-    ({purchase:['p-name','p-price','p-date','p-notes'],sale:['s-name','s-price','s-date','s-buyer','s-notes'],grading:['g-items','g-cost','g-date','g-grade','g-notes']})[type].forEach(id => document.getElementById(id).value='');
-    ({purchase:['p-type','p-platform','p-invoice'],sale:['s-platform','s-docs'],grading:['g-company','g-status']})[type].forEach(id => document.getElementById(id).selectedIndex=0);
-    document.getElementById(p+'-file').value='';
-    document.getElementById(p+'-file-name').textContent='';
-  }
-
-  function showToast(kind, msg) {
-    const el = document.getElementById('toast-'+kind);
-    el.textContent = msg; el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 4000);
-  }
-
-  function filterLog(f) {
-    currentFilter = f;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', (f==='all'&&b.textContent==='All')||b.textContent.toLowerCase()===f+'s'||b.textContent.toLowerCase()===f));
-    renderLog();
-  }
-
-  async function loadHistory() {
-    if (allSubmissions.length) renderLog();
-    else document.getElementById('log-items').innerHTML = '<div class="log-loading">Loading...</div>';
-    try {
-      const res = await fetch(SCRIPT_URL);
-      const data = await res.json();
-      allSubmissions = [];
-      (data.purchases||[]).forEach(r => allSubmissions.push({ type:'purchase', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
-      (data.sales||[]).forEach(r => allSubmissions.push({ type:'sale', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
-      (data.grading||[]).forEach(r => allSubmissions.push({ type:'grading', itemName:r.itemName, date:r.date, timestamp:r.timestamp }));
-      allSubmissions.sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp));
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify(allSubmissions)); } catch(e) {}
-      renderLog();
-    } catch(err) {
-      if (!allSubmissions.length) document.getElementById('log-items').innerHTML = '<div class="log-loading">Could not load. Check connection.</div>';
-    }
-  }
-
-  function renderLog() {
-    const filtered = currentFilter==='all' ? allSubmissions : allSubmissions.filter(s => s.type===currentFilter);
-    if (!filtered.length) { document.getElementById('log-items').innerHTML = '<div class="empty-state">No submissions yet.</div>'; return; }
-    document.getElementById('log-items').innerHTML = filtered.map(s => {
-      const d = s.date || (s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}) : '');
-      return '<div class="log-row"><span class="log-badge '+s.type+'">'+cap(s.type)+'</span><span class="log-item-name">'+(s.itemName||'')+'</span><span class="log-item-date">'+d+'</span></div>';
-    }).join('');
-  }
-
-  function cap(s) { return s.charAt(0).toUpperCase()+s.slice(1); }
-
-  document.getElementById('p-date').valueAsDate = new Date();
-  document.getElementById('s-date').valueAsDate = new Date();
-  document.getElementById('g-date').valueAsDate = new Date();
+  loadPending();
 </script>
 </body>
 </html>
